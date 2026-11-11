@@ -6,6 +6,7 @@
 <meta name="description" content="Conoce la contaminación ambiental y descubre acciones sencillas para cuidar nuestro planeta.">
 <title>Respira Futuro | Cuidemos el planeta</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap');
 :root{--green:#176b48;--lime:#c7ed79;--ink:#17352b;--cream:#f5f8ef;--muted:#60736a}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -159,16 +160,79 @@ section:not(.hero){content-visibility:auto}
 @media(max-width:520px){.recycle-orbit{width:205px;height:205px}.photo-grid{grid-template-columns:1fr}.photo-one{grid-column:auto}.photo-card{height:240px}}
 @media(prefers-reduced-motion:reduce){.recycle-orbit,.orbit-track,.falling-leaf{animation:none!important}}
 
+
+/* EDICIÓN PRO: luz, profundidad y movimiento */
+:root{--neon:#c8ff79;--mint:#79f0b2;--deep:#06140f}
+body{font-family:'Space Grotesk','DM Sans',sans-serif}
+.topbar{box-shadow:0 10px 35px #0002}
+.logo{font-family:'Orbitron',sans-serif;letter-spacing:1.4px;text-shadow:0 0 18px #b8f36b55}
+.top-note{font-family:'Orbitron',sans-serif}
+h1,h2,h3{letter-spacing:-.045em}
+.hero h1{font-family:'Orbitron',sans-serif;font-weight:900;letter-spacing:-.075em;text-shadow:0 0 12px #c8ff7940,0 0 42px #8eea4a35;animation:titleGlow 4s ease-in-out infinite}
+.hero h1 span{background:linear-gradient(100deg,#d9ff9d 5%,#85e9a5 35%,#f4ffd8 50%,#a8f36d 70%,#e0ffab 95%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shineText 5s linear infinite}
+.hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 20%,#ffffff08 48%,transparent 68%);transform:translateX(-100%);animation:heroSweep 9s ease-in-out infinite}
+.planet-stage{filter:drop-shadow(0 25px 35px #0005)}
+.planet{position:relative;z-index:1;display:grid;place-items:center;width:clamp(210px,27vw,330px);height:clamp(210px,27vw,330px);font-size:0;border-radius:50%;overflow:hidden;border:1px solid #d5ffb66b;box-shadow:0 0 0 10px #b8f36b0c,0 0 65px #68db8d60,inset -22px -18px 42px #001b2680;animation:earthDrift 9s ease-in-out infinite}
+.planet img{width:100%;height:100%;object-fit:cover;animation:earthRotate 65s linear infinite;filter:saturate(1.15) contrast(1.08)}
+.planet:after{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(110deg,#ffffff30,transparent 34%,#001b2655 90%);pointer-events:none}
+.planet-glow{width:310px;height:310px;background:#68df9a40;filter:blur(65px)}
+.recycle-orbit{width:calc(clamp(210px,27vw,330px) + 75px);height:calc(clamp(210px,27vw,330px) + 75px);border-color:#c8ff79aa}
+.recycle-orbit span{font-family:Arial,sans-serif;box-shadow:0 0 16px #c8ff79,0 0 38px #c8ff7977;animation:recyclePulse 2.8s ease-in-out infinite}
+.orbit-heading{font-family:'Orbitron',sans-serif;text-shadow:0 0 18px #c8ff7950}
+.orbit-track{border-width:1.5px;filter:drop-shadow(0 0 8px #b8f36b55)}
+.orbit-link{backdrop-filter:blur(12px);background:linear-gradient(145deg,#174a35ed,#09271fed);border-color:#c8ff7980;box-shadow:0 12px 32px #0006,0 0 16px #b8f36b12;animation:floatMenu 5s ease-in-out infinite,linkGlow 4s ease-in-out infinite}
+.orbit-link b{font-family:'Orbitron',sans-serif;font-size:.6rem}
+.orbit-link:hover{box-shadow:0 0 16px #c8ff79,0 0 42px #b8f36b88}
+section:not(.challenge):not(.visual-world){position:relative}
+.section-head h2{color:#153d2d}
+.section-head h2:after{content:"";display:block;width:54px;height:4px;border-radius:4px;background:linear-gradient(90deg,#176b48,#b8f36b);margin:17px auto 0}
+.card,.video,.school,.action{border-radius:22px;box-shadow:0 15px 38px #153d2d0b;transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease}
+.card:hover,.video:hover,.school:hover,.action:hover{transform:translateY(-8px);box-shadow:0 22px 45px #153d2d19;border-color:#9acb83}
+.card .emoji,.action>span,.video .emoji{filter:drop-shadow(0 5px 5px #1b5a3222);transition:transform .35s}
+.card:hover .emoji,.action:hover>span,.video:hover .emoji{transform:translateY(-4px) rotate(-8deg) scale(1.12)}
+.impact{box-shadow:0 20px 45px #102f2530;position:relative;overflow:hidden}
+.impact:after{content:"✳";position:absolute;right:18px;top:-25px;font-size:8rem;color:#b8f36b16}
+.photo-card{border:1px solid #c8ff7960}
+.photo-card img{filter:saturate(.9) contrast(1.06)}
+.photo-card:hover{box-shadow:0 25px 55px #0c291f45}
+.video a{display:inline-flex;padding:10px 15px;border-radius:30px;background:#e7f3dc;transition:.25s}
+.video a:hover{background:#176b48;color:white;text-decoration:none;transform:translateX(4px)}
+.challenge{position:relative;overflow:hidden}
+.challenge:before,.challenge:after{content:"";position:absolute;border:1px solid #c8ff7928;border-radius:50%;width:440px;height:440px;pointer-events:none}
+.challenge:before{top:-300px;left:-170px;box-shadow:0 0 0 35px #c8ff7908,0 0 0 75px #c8ff7905}
+.challenge:after{bottom:-350px;right:-160px;box-shadow:0 0 0 35px #c8ff7908,0 0 0 75px #c8ff7905}
+.challenge>*{position:relative;z-index:1}
+.challenge h2{font-family:'Orbitron',sans-serif;text-shadow:0 0 24px #b8f36b30}
+.checklist{backdrop-filter:blur(12px);box-shadow:0 18px 55px #0002}
+.progress{box-shadow:inset 0 2px 5px #0003}
+.progress div{box-shadow:0 0 16px #c8ff79}
+footer strong{font-family:'Orbitron',sans-serif;letter-spacing:1px;text-shadow:0 0 18px #b8f36b70}
+.scroll-progress{position:fixed;z-index:100;top:0;left:0;width:100%;height:3px;background:#ffffff12}
+.scroll-progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,#62d99b,#d6ff84);box-shadow:0 0 14px #c8ff79;transition:width .08s linear}
+.back-top{position:fixed;z-index:30;right:22px;bottom:22px;width:48px;height:48px;border:1px solid #c8ff7990;border-radius:50%;background:#103c2c;color:#dfffad;font-size:1.35rem;cursor:pointer;box-shadow:0 8px 25px #0004;opacity:0;visibility:hidden;transform:translateY(12px);transition:.3s}
+.back-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
+.back-top:hover{background:#c8ff79;color:#102f25;box-shadow:0 0 24px #c8ff79}
+@keyframes shineText{to{background-position:220% center}}
+@keyframes titleGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.22)}}
+@keyframes heroSweep{0%,65%,100%{transform:translateX(-100%)}82%{transform:translateX(100%)}}
+@keyframes earthRotate{to{transform:rotate(360deg)}}
+@keyframes earthDrift{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes recyclePulse{0%,100%{transform:scale(1);box-shadow:0 0 16px #c8ff79}50%{transform:scale(1.1);box-shadow:0 0 32px #c8ff79}}
+@keyframes linkGlow{0%,100%{border-color:#c8ff7955}50%{border-color:#c8ff79bb}}
+@media(max-width:850px){.planet{width:245px;height:245px}.recycle-orbit{width:300px;height:300px}.hero:after{display:none}}
+@media(max-width:520px){.planet{width:220px;height:220px}.recycle-orbit{width:275px;height:275px}.back-top{right:14px;bottom:14px}}
+@media(prefers-reduced-motion:reduce){.hero h1,.hero h1 span,.hero:after,.planet img,.planet,.recycle-orbit span,.orbit-link{animation:none!important}}
 </style>
 </head>
 <body>
+<div class="scroll-progress" aria-hidden="true"><span id="scrollBar"></span></div>
 <nav class="topbar"><a class="logo" href="#inicio" style="text-decoration:none">RESPIRA <span>FUTURO</span></a><span class="top-note">UNA NUEVA FORMA DE CUIDAR NUESTRO PLANETA</span></nav>
 <header class="hero" id="inicio">
   <div class="hero-left">
     <span class="eyebrow">Pequeñas acciones, grandes cambios</span>
     <h1>RESPIRA<br><span>FUTURO.</span></h1>
     <p>El planeta es nuestro hogar. Conoce los problemas que lo afectan y descubre cómo puedes ser parte del cambio.</p>
-    <div class="planet-stage"><div class="planet-glow"></div><div class="planet" aria-label="Planeta Tierra">🌎</div><div class="recycle-orbit" aria-hidden="true"><span>♻</span></div><i class="falling-leaf leaf-a">🍃</i><i class="falling-leaf leaf-b">♻️</i><i class="falling-leaf leaf-c">🌱</i><span class="planet-caption">UN SOLO PLANETA. miles de razones para cuidarlo.</span></div>
+    <div class="planet-stage"><div class="planet-glow"></div><div class="planet" aria-label="Planeta Tierra"><img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=900&q=90" alt="Vista de la Tierra desde el espacio"></div><div class="recycle-orbit" aria-hidden="true"><span>♻</span></div><i class="falling-leaf leaf-a">🍃</i><i class="falling-leaf leaf-b">♻️</i><i class="falling-leaf leaf-c">🌱</i><span class="planet-caption">UN SOLO PLANETA. miles de razones para cuidarlo.</span></div>
   </div>
   <div class="orbit-side">
     <div class="orbit-heading">EXPLORA EL PLANETA <span>↓</span></div>
@@ -263,11 +327,24 @@ section:not(.hero){content-visibility:auto}
     <div class="progress"><div id="bar"></div></div><div id="count">0 de 4 compromisos cumplidos</div>
   </div>
 </section>
+<button class="back-top" id="backTop" aria-label="Volver arriba" title="Volver arriba">↑</button>
 <footer><p><strong>RESPIRA FUTURO</strong> · La Tierra es nuestro hogar, cuidarla es responsabilidad de todos.</p><p style="font-size:.82rem;margin-top:8px">Contenido educativo para promover hábitos responsables y conciencia ambiental.</p></footer>
 <script>
 const tasks=[...document.querySelectorAll('.task')];
 function updateProgress(){const done=tasks.filter(t=>t.checked).length;document.getElementById('bar').style.width=(done/tasks.length*100)+'%';document.getElementById('count').textContent=done+' de '+tasks.length+' compromisos cumplidos';}
 tasks.forEach(t=>t.addEventListener('change',updateProgress));
+/* Barra de avance y botón para volver al inicio */
+const scrollBar=document.getElementById('scrollBar');
+const backTop=document.getElementById('backTop');
+function updateScrollUI(){
+ const max=document.documentElement.scrollHeight-window.innerHeight;
+ const pct=max>0?(window.scrollY/max)*100:0;
+ scrollBar.style.width=pct+'%';
+ backTop.classList.toggle('visible',window.scrollY>500);
+}
+window.addEventListener('scroll',updateScrollUI,{passive:true});
+updateScrollUI();
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 /* Animaciones de aparición al desplazarse */
 document.documentElement.classList.add('reveal-ready');
 const revealItems=document.querySelectorAll('.section-head,.card,.school,.action,.video,.photo-card,.impact,.list li');
