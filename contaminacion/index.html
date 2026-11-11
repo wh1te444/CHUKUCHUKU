@@ -135,6 +135,30 @@ footer{background:#06150f}
 @media(max-width:430px){h1{font-size:3.7rem}.orbit-menu{min-width:290px;min-height:290px}.orbit-link{width:94px;height:55px}.orbit-link b{font-size:.57rem}.orbit-core{width:92px;height:92px}.planet-stage{height:250px}.planet{font-size:12rem}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 
+
+/* Movimiento ambiental: órbitas, partículas y entrada de secciones */
+.recycle-orbit{position:absolute;width:245px;height:245px;border:1px dashed #c9f58c9c;border-radius:50%;display:grid;place-items:start center;animation:recycleSpin 18s linear infinite;z-index:2;pointer-events:none}
+.recycle-orbit span{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#b8f36b;color:#143c2a;font-size:2rem;box-shadow:0 0 24px #b8f36b80;margin-top:-18px}
+.falling-leaf{position:absolute;font-style:normal;font-size:1.6rem;filter:drop-shadow(0 5px 8px #0005);animation:leafFall 7s ease-in-out infinite}
+.leaf-a{top:2%;left:10%;animation-delay:-1s}.leaf-b{top:10%;right:5%;font-size:1.25rem;animation-delay:-4s}.leaf-c{bottom:8%;left:5%;animation-delay:-2.5s}
+.orbit-track{animation:orbitSpin 42s linear infinite,orbitPulse 6s ease-in-out infinite}
+.orbit-link{will-change:transform}
+section:not(.hero){content-visibility:auto}
+.reveal-ready .section-head,.reveal-ready .card,.reveal-ready .school,.reveal-ready .action,.reveal-ready .video,.reveal-ready .photo-card,.reveal-ready .impact,.reveal-ready .list li{opacity:0;transform:translateY(24px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.2,1)}
+.reveal-ready .is-visible{opacity:1!important;transform:translateY(0)!important}
+.photo-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:18px}
+.photo-card{height:310px;position:relative;overflow:hidden;border-radius:22px;background:#17352b;box-shadow:0 18px 40px #102f2520}
+.photo-card img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .6s}
+.photo-card:hover img{transform:scale(1.08);filter:saturate(1.12)}
+.photo-card:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#071c17d9)}
+.photo-card figcaption{position:absolute;z-index:1;left:22px;bottom:20px;color:white;font:800 1.1rem Montserrat,sans-serif;letter-spacing:.2px}
+@keyframes recycleSpin{to{transform:rotate(360deg)}}
+@keyframes orbitSpin{to{transform:rotate(360deg)}}
+@keyframes leafFall{0%,100%{transform:translate3d(0,-9px,0) rotate(-15deg);opacity:.55}50%{transform:translate3d(12px,22px,0) rotate(25deg);opacity:1}}
+@media(max-width:850px){.photo-grid{grid-template-columns:1fr 1fr}.photo-one{grid-column:span 2;height:260px}.photo-card{height:230px}}
+@media(max-width:520px){.recycle-orbit{width:205px;height:205px}.photo-grid{grid-template-columns:1fr}.photo-one{grid-column:auto}.photo-card{height:240px}}
+@media(prefers-reduced-motion:reduce){.recycle-orbit,.orbit-track,.falling-leaf{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -144,7 +168,7 @@ footer{background:#06150f}
     <span class="eyebrow">Pequeñas acciones, grandes cambios</span>
     <h1>RESPIRA<br><span>FUTURO.</span></h1>
     <p>El planeta es nuestro hogar. Conoce los problemas que lo afectan y descubre cómo puedes ser parte del cambio.</p>
-    <div class="planet-stage"><div class="planet-glow"></div><div class="planet" aria-label="Planeta Tierra">🌎</div><span class="planet-caption">UN SOLO PLANETA. miles de razones para cuidarlo.</span></div>
+    <div class="planet-stage"><div class="planet-glow"></div><div class="planet" aria-label="Planeta Tierra">🌎</div><div class="recycle-orbit" aria-hidden="true"><span>♻</span></div><i class="falling-leaf leaf-a">🍃</i><i class="falling-leaf leaf-b">♻️</i><i class="falling-leaf leaf-c">🌱</i><span class="planet-caption">UN SOLO PLANETA. miles de razones para cuidarlo.</span></div>
   </div>
   <div class="orbit-side">
     <div class="orbit-heading">EXPLORA EL PLANETA <span>↓</span></div>
@@ -208,6 +232,15 @@ footer{background:#06150f}
   </div>
 </section>
 
+<section class="visual-world" aria-label="Imágenes sobre el cuidado del planeta">
+  <div class="section-head"><span class="eyebrow">Nuestro planeta, nuestra responsabilidad</span><h2>El cambio también se ve</h2><p>Los residuos no desaparecen cuando los dejamos en la calle. Cuidar el entorno comienza con decisiones cotidianas.</p></div>
+  <div class="photo-grid">
+    <figure class="photo-card photo-one"><img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1000&q=85" alt="Residuos plásticos que necesitan una correcta gestión"><figcaption>Reducir los residuos</figcaption></figure>
+    <figure class="photo-card photo-two"><img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1000&q=85" alt="Manos sosteniendo una pequeña planta"><figcaption>Proteger la naturaleza</figcaption></figure>
+    <figure class="photo-card photo-three"><img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=1000&q=85" alt="Paisaje natural con árboles y montañas"><figcaption>Conservar nuestro hogar</figcaption></figure>
+  </div>
+</section>
+
 <section id="videos">
   <div class="section-head"><span class="eyebrow">Aprende y comparte</span><h2>Videos para tomar conciencia</h2><p>Explora estos temas en YouTube y comparte los videos educativos con tu familia o comunidad.</p></div>
   <div class="video-grid">
@@ -235,6 +268,16 @@ footer{background:#06150f}
 const tasks=[...document.querySelectorAll('.task')];
 function updateProgress(){const done=tasks.filter(t=>t.checked).length;document.getElementById('bar').style.width=(done/tasks.length*100)+'%';document.getElementById('count').textContent=done+' de '+tasks.length+' compromisos cumplidos';}
 tasks.forEach(t=>t.addEventListener('change',updateProgress));
+/* Animaciones de aparición al desplazarse */
+document.documentElement.classList.add('reveal-ready');
+const revealItems=document.querySelectorAll('.section-head,.card,.school,.action,.video,.photo-card,.impact,.list li');
+if('IntersectionObserver' in window){
+ const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+  if(entry.isIntersecting){entry.target.classList.add('is-visible');revealObserver.unobserve(entry.target);}
+ }),{threshold:.12});
+ revealItems.forEach(item=>revealObserver.observe(item));
+}else{revealItems.forEach(item=>item.classList.add('is-visible'));}
+
 </script>
 </body>
 </html>
