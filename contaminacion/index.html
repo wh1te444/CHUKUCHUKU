@@ -75,27 +75,91 @@ footer{text-align:center;padding:30px 8%;background:#10271f;color:#c8d8cd}
 footer strong{color:var(--lime)}
 @media(max-width:850px){.hero,.split{grid-template-columns:1fr}.hero{text-align:center}.hero p{margin-left:auto;margin-right:auto}.hero-art{max-width:520px;width:100%;margin:auto}.cards{grid-template-columns:1fr 1fr}.links{display:none}.menu-btn{display:block}.links.open{display:flex;position:absolute;top:62px;left:0;right:0;background:var(--cream);padding:20px;flex-direction:column;gap:15px}.video-grid{grid-template-columns:1fr}}
 @media(max-width:560px){section{padding:65px 6%}.hero{padding:75px 6%}.cards,.actions{grid-template-columns:1fr}.float.one{left:0}.float.two{right:0}h1{letter-spacing:-2px}}
+
+/* Nuevo diseño: planeta + navegación orbital */
+:root{--green:#147a4b;--lime:#b8f36b;--ink:#102f25;--cream:#071c17}
+html{scroll-behavior:smooth;scroll-padding-top:35px}
+body{background:#071c17;color:#f1f8ed}
+.topbar{height:76px;padding:0 7%;background:#071c17eF;border-bottom:1px solid #b8f36b30}
+.top-note{font-size:.68rem;letter-spacing:2px;color:#a9c5b3;font-weight:800}
+.hero{min-height:calc(100vh - 76px);padding:55px 7%;grid-template-columns:1fr 1fr;gap:5vw;overflow:hidden;position:relative;background:radial-gradient(ellipse at 20% 65%,#176b484d,transparent 35%),radial-gradient(ellipse at 80% 35%,#9edb5530,transparent 35%),linear-gradient(135deg,#071c17,#0d3024 60%,#071c17);color:#f4faef}
+.hero:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.16;background-image:radial-gradient(#d8f5c4 1px,transparent 1px);background-size:34px 34px}
+.hero-left,.orbit-side{position:relative;z-index:1}
+.hero-left{display:flex;flex-direction:column;align-items:flex-start}
+.hero .eyebrow{background:#b8f36b18;color:#c8fa91;border:1px solid #b8f36b55}
+h1{font-size:clamp(3.6rem,7vw,6.7rem);letter-spacing:-5px;line-height:.94;margin:24px 0 15px;text-shadow:0 0 28px #9bea5550}
+h1 span{color:#b8f36b;text-shadow:0 0 22px #9bea5570}
+.hero p{color:#c2d9c9;max-width:480px;font-size:1.05rem}
+.hero .btn{background:#b8f36b;color:#102f25;border-radius:40px;box-shadow:0 0 28px #b8f36b35}
+.planet-stage{width:min(100%,480px);height:310px;display:grid;place-items:center;position:relative;margin-top:8px}
+.planet{font-size:clamp(12rem,23vw,18rem);filter:drop-shadow(0 0 25px #75d78d80);animation:planetFloat 7s ease-in-out infinite}
+.planet-glow{position:absolute;width:250px;height:250px;border-radius:50%;background:#61d77a30;filter:blur(45px);animation:glowPulse 5s ease-in-out infinite}
+.planet-caption{position:absolute;bottom:4px;left:0;color:#9bb9a5;font-size:.64rem;letter-spacing:2px;text-transform:uppercase;font-weight:800}
+.orbit-side{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.orbit-heading{font-family:Montserrat,sans-serif;font-size:1.1rem;letter-spacing:3px;color:#dff7c8;font-weight:900}
+.orbit-heading span{color:#b8f36b;margin-left:8px}
+.orbit-help{font-size:.88rem!important;text-align:center;color:#a9c5b3!important;max-width:360px!important;margin:8px 0 0!important}
+.orbit-menu{width:min(39vw,480px);height:min(39vw,480px);min-width:330px;min-height:330px;max-width:480px;max-height:480px;position:relative;margin:14px auto 0;border-radius:50%}
+.orbit-track{position:absolute;inset:7%;border:1px solid #b8f36b65;border-radius:50%;box-shadow:0 0 35px #8be66b19,inset 0 0 30px #8be66b12;animation:orbitPulse 6s ease-in-out infinite}
+.orbit-track:before,.orbit-track:after{content:"";position:absolute;border:1px dashed #b8f36b35;border-radius:50%;inset:11%}
+.orbit-track:after{inset:-7%;border-style:solid;border-color:#b8f36b20}
+.orbit-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:112px;height:112px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle,#1c6344,#0c2d21);border:1px solid #b8f36b8c;box-shadow:0 0 35px #b8f36b35;color:#dff7c8;font-size:.67rem;letter-spacing:1px}
+.orbit-core span{font-size:2rem}
+.orbit-link{position:absolute;width:120px;height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:#d9e9dc;background:#103b2b;border:1px solid #b8f36b65;border-radius:15px;box-shadow:0 8px 24px #0005;transition:transform .25s,background .25s,color .25s,box-shadow .25s;animation:floatMenu 5s ease-in-out infinite}
+.orbit-link span{font-size:.62rem;color:#b8f36b;font-weight:900;letter-spacing:2px}
+.orbit-link b{font-family:Montserrat,sans-serif;font-size:.65rem;letter-spacing:.4px;text-align:center}
+.orbit-link:hover,.orbit-link:focus-visible{background:#b8f36b;color:#102f25;transform:scale(1.13);box-shadow:0 0 28px #b8f36b9c;outline:none}
+.orbit-link:hover span,.orbit-link:focus-visible span{color:#176b48}
+.item1{left:50%;top:0;transform:translateX(-50%);animation-delay:0s}
+.item2{right:-1%;top:25%;animation-delay:.5s}
+.item3{right:7%;bottom:5%;animation-delay:1s}
+.item4{left:7%;bottom:5%;animation-delay:1.5s}
+.item5{left:-1%;top:25%;animation-delay:2s}
+.item6{left:50%;bottom:-2%;transform:translateX(-50%);animation-delay:2.5s}
+.item1:hover,.item6:hover{transform:translateX(-50%) scale(1.13)}
+.scroll-hint{margin-top:0;color:#8eae9a;font-size:.65rem;font-weight:900;letter-spacing:2px}
+.scroll-hint span{color:#b8f36b;font-size:1.2rem;margin-left:8px}
+section{background:#f4f8ef;color:#17352b}
+section.soft{background:#e5f0df}
+.section-head p,.split p,.card p,.school p,.video p{color:#5c7164}
+.card,.video,.school,.action{background:#fff;border-color:#d9e8d7}
+.section-head .eyebrow{background:#e1f2d1;color:#176b48}
+.challenge{background:linear-gradient(135deg,#0e4932,#071c17);color:#f5faef}
+.challenge .eyebrow{color:#d7f9b0}
+footer{background:#06150f}
+@keyframes planetFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-13px) rotate(3deg)}}
+@keyframes glowPulse{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.12)}}
+@keyframes orbitPulse{0%,100%{box-shadow:0 0 25px #8be66b12,inset 0 0 20px #8be66b08}50%{box-shadow:0 0 48px #8be66b35,inset 0 0 40px #8be66b20}}
+@keyframes floatMenu{0%,100%{filter:brightness(1);margin-top:0}50%{filter:brightness(1.18);margin-top:-5px}}
+@media(max-width:850px){.top-note{display:none}.hero{grid-template-columns:1fr;padding:55px 6%;text-align:center}.hero-left{align-items:center}.hero p{margin-left:auto;margin-right:auto}.planet-stage{margin:10px auto 0}.orbit-menu{width:min(82vw,430px);height:min(82vw,430px);min-width:300px;min-height:300px}.orbit-link{width:108px;height:58px}.item2{right:-2%}.item5{left:-2%}.item3{right:0}.item4{left:0}.scroll-hint{margin-bottom:15px}}
+@media(max-width:430px){h1{font-size:3.7rem}.orbit-menu{min-width:290px;min-height:290px}.orbit-link{width:94px;height:55px}.orbit-link b{font-size:.57rem}.orbit-core{width:92px;height:92px}.planet-stage{height:250px}.planet{font-size:12rem}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+
 </style>
 </head>
 <body>
-<nav>
-  <a class="logo" href="#inicio" style="text-decoration:none">RESPIRA <span>FUTURO</span></a>
-  <button class="menu-btn" onclick="document.querySelector('.links').classList.toggle('open')">Menú ☰</button>
-  <div class="links">
-    <a href="#problema">El problema</a><a href="#impacto">Consecuencias</a><a href="#acciones">Soluciones</a><a href="#videos">Videos</a>
-  </div>
-</nav>
+<nav class="topbar"><a class="logo" href="#inicio" style="text-decoration:none">RESPIRA <span>FUTURO</span></a><span class="top-note">UNA NUEVA FORMA DE CUIDAR NUESTRO PLANETA</span></nav>
 <header class="hero" id="inicio">
-  <div>
+  <div class="hero-left">
     <span class="eyebrow">Pequeñas acciones, grandes cambios</span>
-    <h1>EL PLANETA<br><span>NO ES DESECHABLE.</span></h1>
-    <p>La contaminación ambiental afecta el aire que respiramos, el agua que necesitamos y los espacios donde vivimos. Informarnos es el primer paso; cambiar nuestros hábitos es lo que puede marcar la diferencia.</p>
-    <a class="btn" href="#acciones">QUIERO AYUDAR 🌱</a>
+    <h1>RESPIRA<br><span>FUTURO.</span></h1>
+    <p>El planeta es nuestro hogar. Conoce los problemas que lo afectan y descubre cómo puedes ser parte del cambio.</p>
+    <div class="planet-stage"><div class="planet-glow"></div><div class="planet" aria-label="Planeta Tierra">🌎</div><span class="planet-caption">UN SOLO PLANETA. miles de razones para cuidarlo.</span></div>
   </div>
-  <div class="hero-art" aria-label="Ilustración del planeta Tierra">
-    <div class="planet">🌎</div>
-    <div class="float one">🌿 Cuida la naturaleza</div>
-    <div class="float two">♻️ Reduce tus residuos</div>
+  <div class="orbit-side">
+    <div class="orbit-heading">EXPLORA EL PLANETA <span>↓</span></div>
+    <p class="orbit-help">Elige un tema. El menú gira lentamente y te llevará a cada sección.</p>
+    <div class="orbit-menu" aria-label="Menú circular de navegación">
+      <div class="orbit-track"></div>
+      <div class="orbit-core"><span>🌱</span><b>EXPLORAR</b></div>
+      <a class="orbit-link item1" href="#problema"><span>01</span><b>EL PROBLEMA</b></a>
+      <a class="orbit-link item2" href="#impacto"><span>02</span><b>CONSECUENCIAS</b></a>
+      <a class="orbit-link item3" href="#escuela"><span>03</span><b>EN LA ESCUELA</b></a>
+      <a class="orbit-link item4" href="#acciones"><span>04</span><b>SOLUCIONES</b></a>
+      <a class="orbit-link item5" href="#videos"><span>05</span><b>VIDEOS</b></a>
+      <a class="orbit-link item6" href="#compromiso"><span>06</span><b>MI COMPROMISO</b></a>
+    </div>
+    <div class="scroll-hint">DESLIZA PARA DESCUBRIR <span>⌄</span></div>
   </div>
 </header>
 
@@ -154,7 +218,7 @@ footer strong{color:var(--lime)}
   </div>
 </section>
 
-<section class="challenge">
+<section class="challenge" id="compromiso">
   <span class="eyebrow" style="background:#ffffff20;color:#e5f6c8">Tu compromiso empieza hoy</span>
   <h2>NO ESPERES A QUE OTROS CUIDEN EL PLANETA.</h2>
   <p>Elige una acción que puedas cumplir hoy. Cuando muchas personas cambian un hábito, la comunidad también puede cambiar.</p>
