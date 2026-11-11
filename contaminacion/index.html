@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Conoce la contaminación ambiental y descubre acciones sencillas para cuidar nuestro planeta.">
+<title>Respira Futuro | Cuidemos el planeta</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap');
+:root{--green:#176b48;--lime:#c7ed79;--ink:#17352b;--cream:#f5f8ef;--muted:#60736a}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.65}
+nav{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:15px 7%;background:#f5f8eff2;backdrop-filter:blur(12px);border-bottom:1px solid #dce8d9}
+.logo{font-family:Montserrat,sans-serif;font-weight:900;font-size:1.2rem;color:var(--green);letter-spacing:-1px}
+.logo span{color:#8bbd3d}
+.links{display:flex;gap:24px;align-items:center}
+.links a{color:var(--ink);text-decoration:none;font-weight:700;font-size:.9rem}
+.links a:hover{color:var(--green)}
+.menu-btn{display:none;border:0;background:var(--green);color:white;padding:9px 12px;border-radius:9px;font-weight:700}
+.hero{min-height:650px;padding:95px 8%;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:50px;background:radial-gradient(circle at 80% 35%,#d8edb4 0,transparent 28%),linear-gradient(135deg,#f5f8ef,#e5f0dc)}
+.eyebrow{display:inline-block;padding:7px 13px;background:#e0efcf;color:var(--green);border-radius:30px;font-size:.78rem;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+h1,h2,h3{font-family:Montserrat,sans-serif;line-height:1.12}
+h1{font-size:clamp(3rem,6vw,5.7rem);letter-spacing:-3px;margin:22px 0}
+h1 span{color:var(--green)}
+.hero p{max-width:590px;color:#50665b;font-size:1.12rem;margin-bottom:28px}
+.btn{display:inline-block;text-decoration:none;background:var(--green);color:white;padding:14px 22px;border-radius:12px;font-weight:800;box-shadow:0 8px 20px #176b4830;transition:.2s}
+.btn:hover{transform:translateY(-3px);background:#0f5136}
+.hero-art{min-height:380px;border-radius:42% 58% 55% 45%;background:linear-gradient(145deg,#c9e89b,#5eaa70);display:grid;place-items:center;position:relative;box-shadow:inset 0 0 0 12px #ffffff65}
+.planet{font-size:clamp(9rem,20vw,15rem);filter:drop-shadow(0 18px 12px #245d3440)}
+.float{position:absolute;background:white;border-radius:16px;padding:12px 16px;font-weight:800;box-shadow:0 12px 28px #234d2820}
+.float.one{top:12%;left:-5%}.float.two{bottom:12%;right:-5%}
+section{padding:88px 8%}
+.section-head{text-align:center;max-width:720px;margin:0 auto 42px}
+.section-head .eyebrow{margin-bottom:15px}
+h2{font-size:clamp(2rem,4vw,3.3rem);letter-spacing:-1.5px;margin-bottom:15px}
+.section-head p{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{padding:27px;background:white;border:1px solid #e2ebdd;border-radius:20px;box-shadow:0 12px 30px #193f2310}
+.card .emoji{font-size:2.5rem;margin-bottom:15px}
+.card h3{font-size:1.25rem;margin-bottom:10px}
+.card p{color:var(--muted);font-size:.96rem}
+.soft{background:#eaf2e4}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.split p{color:var(--muted);margin:12px 0}
+.list{list-style:none;margin-top:20px}
+.list li{margin:12px 0;padding-left:30px;position:relative}
+.list li:before{content:'✓';position:absolute;left:0;top:0;color:var(--green);font-weight:900}
+.impact{background:var(--ink);color:white;border-radius:28px;padding:34px}
+.impact h3{font-size:1.6rem;margin-bottom:12px;color:var(--lime)}
+.impact p{color:#d4e2d8}
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.action{display:flex;gap:15px;align-items:flex-start;padding:18px;background:white;border-radius:16px;border:1px solid #e2ebdd}
+.action b{display:block;margin-bottom:4px}
+.action span{font-size:1.8rem}
+.school{background:#fff;border-left:6px solid #8bbd3d;border-radius:16px;padding:28px;box-shadow:0 12px 30px #193f2310}
+.school p{color:var(--muted);margin-top:10px}
+.video-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.video{padding:25px;border-radius:18px;background:#fff;border:1px solid #e2ebdd}
+.video h3{margin:12px 0 8px}
+.video p{color:var(--muted);margin-bottom:16px}
+.video a{color:var(--green);font-weight:800;text-decoration:none}
+.video a:hover{text-decoration:underline}
+.challenge{background:linear-gradient(135deg,#176b48,#0f5136);color:white;text-align:center}
+.challenge h2{max-width:750px;margin:0 auto 16px}
+.challenge p{max-width:650px;margin:0 auto 25px;color:#dcebdd}
+.challenge .btn{background:var(--lime);color:#17352b}
+.checklist{max-width:720px;margin:30px auto 0;text-align:left;background:#ffffff14;border:1px solid #ffffff35;border-radius:18px;padding:22px}
+.checklist label{display:flex;gap:12px;padding:10px 0;cursor:pointer}
+.checklist input{accent-color:var(--lime);width:18px;height:18px;margin-top:4px}
+.progress{height:9px;background:#ffffff35;border-radius:20px;margin-top:15px;overflow:hidden}
+.progress div{height:100%;width:0;background:var(--lime);transition:.2s}
+#count{font-weight:800;margin-top:8px}
+footer{text-align:center;padding:30px 8%;background:#10271f;color:#c8d8cd}
+footer strong{color:var(--lime)}
+@media(max-width:850px){.hero,.split{grid-template-columns:1fr}.hero{text-align:center}.hero p{margin-left:auto;margin-right:auto}.hero-art{max-width:520px;width:100%;margin:auto}.cards{grid-template-columns:1fr 1fr}.links{display:none}.menu-btn{display:block}.links.open{display:flex;position:absolute;top:62px;left:0;right:0;background:var(--cream);padding:20px;flex-direction:column;gap:15px}.video-grid{grid-template-columns:1fr}}
+@media(max-width:560px){section{padding:65px 6%}.hero{padding:75px 6%}.cards,.actions{grid-template-columns:1fr}.float.one{left:0}.float.two{right:0}h1{letter-spacing:-2px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="#inicio" style="text-decoration:none">RESPIRA <span>FUTURO</span></a>
+  <button class="menu-btn" onclick="document.querySelector('.links').classList.toggle('open')">Menú ☰</button>
+  <div class="links">
+    <a href="#problema">El problema</a><a href="#impacto">Consecuencias</a><a href="#acciones">Soluciones</a><a href="#videos">Videos</a>
+  </div>
+</nav>
+<header class="hero" id="inicio">
+  <div>
+    <span class="eyebrow">Pequeñas acciones, grandes cambios</span>
+    <h1>EL PLANETA<br><span>NO ES DESECHABLE.</span></h1>
+    <p>La contaminación ambiental afecta el aire que respiramos, el agua que necesitamos y los espacios donde vivimos. Informarnos es el primer paso; cambiar nuestros hábitos es lo que puede marcar la diferencia.</p>
+    <a class="btn" href="#acciones">QUIERO AYUDAR 🌱</a>
+  </div>
+  <div class="hero-art" aria-label="Ilustración del planeta Tierra">
+    <div class="planet">🌎</div>
+    <div class="float one">🌿 Cuida la naturaleza</div>
+    <div class="float two">♻️ Reduce tus residuos</div>
+  </div>
+</header>
+
+<section id="problema">
+  <div class="section-head"><span class="eyebrow">Conocer para actuar</span><h2>¿Qué es la contaminación ambiental?</h2><p>Es la presencia de sustancias o residuos que alteran el equilibrio del entorno y pueden perjudicar a los seres vivos. Muchas veces es causada por actividades humanas y puede prevenirse con decisiones responsables.</p></div>
+  <div class="cards">
+    <article class="card"><div class="emoji">🌫️</div><h3>Contaminación del aire</h3><p>El humo de vehículos, fábricas y la quema de basura liberan sustancias que deterioran la calidad del aire.</p></article>
+    <article class="card"><div class="emoji">💧</div><h3>Contaminación del agua</h3><p>Los residuos, aceites, aguas contaminadas y productos químicos pueden llegar a ríos, lagos y mares.</p></article>
+    <article class="card"><div class="emoji">🗑️</div><h3>Contaminación del suelo</h3><p>La acumulación de basura y el manejo inadecuado de sustancias dañinas afectan los suelos y los ecosistemas.</p></article>
+  </div>
+</section>
+
+<section class="soft" id="impacto">
+  <div class="section-head"><span class="eyebrow">No es un problema lejano</span><h2>¿Por qué debería importarnos?</h2><p>Cuando contaminamos el ambiente, también ponemos en riesgo nuestra calidad de vida y la de las próximas generaciones.</p></div>
+  <div class="split">
+    <div>
+      <div class="impact"><h3>Lo que está en juego</h3><p>Un ambiente limpio ayuda a proteger la salud, conservar la biodiversidad y mantener espacios seguros y agradables para convivir. La contaminación puede afectar a personas, animales, plantas y recursos naturales.</p></div>
+    </div>
+    <div>
+      <ul class="list">
+        <li><b>Salud:</b> el aire y el agua contaminados pueden favorecer enfermedades.</li>
+        <li><b>Naturaleza:</b> los residuos dañan hábitats y ponen en peligro a distintas especies.</li>
+        <li><b>Comunidad:</b> la basura acumulada genera malos olores, atrae insectos y deteriora los espacios públicos.</li>
+        <li><b>Futuro:</b> desperdiciar recursos y contaminar dificulta que las próximas generaciones disfruten de un ambiente saludable.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head"><span class="eyebrow">También empieza cerca</span><h2>Una escuela más limpia es posible</h2><p>Los cambios no tienen que comenzar en lugares enormes. También pueden empezar en el salón, el patio y los espacios que compartimos.</p></div>
+  <div class="school"><h3>Un ejemplo cotidiano: los residuos sólidos</h3><p>Después de los recreos y las actividades escolares pueden quedar botellas, envolturas y restos de alimentos en patios y áreas comunes. Esto ocurre cuando no se depositan los residuos en los lugares adecuados o no se separan correctamente.</p><p><b>¿Qué podemos hacer?</b> Colocar los residuos en los tachos correspondientes, separar los materiales aprovechables, reducir los descartables y participar en campañas de limpieza y sensibilización.</p></div>
+</section>
+
+<section class="soft" id="acciones">
+  <div class="section-head"><span class="eyebrow">Cada hábito cuenta</span><h2>7 acciones para cuidar el ambiente</h2><p>No necesitas hacer algo extraordinario. Lo importante es convertir estas acciones en costumbres.</p></div>
+  <div class="actions">
+    <div class="action"><span>♻️</span><div><b>Separa tus residuos</b>Clasifica papel, cartón, plástico y residuos orgánicos cuando existan puntos de segregación.</div></div>
+    <div class="action"><span>🚰</span><div><b>Cuida el agua</b>Cierra bien los caños y evita arrojar aceite o basura al desagüe.</div></div>
+    <div class="action"><span>🛍️</span><div><b>Reduce los descartables</b>Usa una botella reutilizable y una bolsa que puedas volver a utilizar.</div></div>
+    <div class="action"><span>💡</span><div><b>Ahorra energía</b>Apaga las luces y desconecta los equipos que no estés utilizando.</div></div>
+    <div class="action"><span>🌳</span><div><b>Protege las áreas verdes</b>Cuida las plantas, árboles y espacios naturales de tu comunidad.</div></div>
+    <div class="action"><span>🚶</span><div><b>Elige formas de movilidad sostenibles</b>Cuando sea posible y seguro, camina, usa bicicleta o transporte público.</div></div>
+    <div class="action"><span>📢</span><div><b>Comparte lo que aprendes</b>Invita a tu familia, amistades y compañeros a cuidar los espacios comunes.</div></div>
+    <div class="action"><span>🧹</span><div><b>Deja limpio lo que utilizas</b>No arrojes residuos en calles, parques, patios ni playas.</div></div>
+  </div>
+</section>
+
+<section id="videos">
+  <div class="section-head"><span class="eyebrow">Aprende y comparte</span><h2>Videos para tomar conciencia</h2><p>Explora estos temas en YouTube y comparte los videos educativos con tu familia o comunidad.</p></div>
+  <div class="video-grid">
+    <article class="video"><div class="emoji">🌎</div><h3>¿Qué es la contaminación ambiental?</h3><p>Conoce sus tipos, causas y efectos en nuestro entorno.</p><a href="https://www.youtube.com/results?search_query=contaminacion+ambiental+explicacion+educativa" target="_blank" rel="noopener">Ver videos educativos ↗</a></article>
+    <article class="video"><div class="emoji">♻️</div><h3>Cómo separar correctamente los residuos</h3><p>Aprende a reconocer los residuos y a reducir la basura que generamos.</p><a href="https://www.youtube.com/results?search_query=como+separar+residuos+solidos+reciclaje+Peru" target="_blank" rel="noopener">Ver recomendaciones ↗</a></article>
+    <article class="video"><div class="emoji">💧</div><h3>El cuidado del agua</h3><p>Descubre por qué es importante evitar su contaminación y desperdicio.</p><a href="https://www.youtube.com/results?search_query=videos+educativos+cuidado+del+agua" target="_blank" rel="noopener">Ver videos ↗</a></article>
+    <article class="video"><div class="emoji">🌱</div><h3>Hábitos para cuidar el planeta</h3><p>Ideas sencillas para aplicar en casa, en la escuela y en el barrio.</p><a href="https://www.youtube.com/results?search_query=habitos+para+cuidar+el+medio+ambiente+para+estudiantes" target="_blank" rel="noopener">Ver ideas y consejos ↗</a></article>
+  </div>
+</section>
+
+<section class="challenge">
+  <span class="eyebrow" style="background:#ffffff20;color:#e5f6c8">Tu compromiso empieza hoy</span>
+  <h2>NO ESPERES A QUE OTROS CUIDEN EL PLANETA.</h2>
+  <p>Elige una acción que puedas cumplir hoy. Cuando muchas personas cambian un hábito, la comunidad también puede cambiar.</p>
+  <div class="checklist">
+    <label><input type="checkbox" class="task"> Hoy no arrojaré basura al suelo.</label>
+    <label><input type="checkbox" class="task"> Separaré mis residuos cuando sea posible.</label>
+    <label><input type="checkbox" class="task"> Evitaré usar un descartable innecesario.</label>
+    <label><input type="checkbox" class="task"> Animaré a alguien más a cuidar su entorno.</label>
+    <div class="progress"><div id="bar"></div></div><div id="count">0 de 4 compromisos cumplidos</div>
+  </div>
+</section>
+<footer><p><strong>RESPIRA FUTURO</strong> · La Tierra es nuestro hogar, cuidarla es responsabilidad de todos.</p><p style="font-size:.82rem;margin-top:8px">Contenido educativo para promover hábitos responsables y conciencia ambiental.</p></footer>
+<script>
+const tasks=[...document.querySelectorAll('.task')];
+function updateProgress(){const done=tasks.filter(t=>t.checked).length;document.getElementById('bar').style.width=(done/tasks.length*100)+'%';document.getElementById('count').textContent=done+' de '+tasks.length+' compromisos cumplidos';}
+tasks.forEach(t=>t.addEventListener('change',updateProgress));
+</script>
+</body>
+</html>
