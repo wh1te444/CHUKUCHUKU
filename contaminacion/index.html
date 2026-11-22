@@ -745,76 +745,93 @@ function leaves(){for(var i=0;i<36;i++){var c=document.createElement('i');c.clas
 function upd(){var n=0;cb.forEach(function(c){if(c.checked)n++});mb.style.width=(n/cb.length*100)+'%';if(n===cb.length){mg.textContent='¡Gracias! Tu compromiso hace la diferencia';leaves()}else mg.textContent=n+' de '+cb.length+' acciones'}
 cb.forEach(function(c){c.onchange=upd});
 
-/* ---------- minijuego quiz ---------- */
-var QUIZ=[
-{q:'¿De qué color es el contenedor para botellas de plástico, papel y cartón limpios?',o:['Contenedor Verde','Contenedor Marrón','Contenedor Rojo'],c:0,tip:'El verde reúne los residuos aprovechables secos y limpios.'},
-{q:'¿Dónde deben botarse las pilas usadas y focos quemados?',o:['Contenedor Negro','Contenedor Rojo','Contenedor Verde'],c:1,tip:'Son residuos peligrosos y van al contenedor rojo.'},
-{q:'¿Cuánto tarda aproximadamente en degradarse una botella de plástico?',o:['2 años','50 años','450 años'],c:2,tip:'El plástico tarda siglos en fragmentarse y contamina ríos y mares.'},
-{q:'¿Qué significa la primera "R" de las 3R ecológicas?',o:['Recoger','Reducir','Regalar'],c:1,tip:'Reducir, Reutilizar y Reciclar son la base para generar menos basura.'},
-{q:'¿Qué contenedor se usa para cáscaras de frutas y restos de comida?',o:['Contenedor Marrón','Contenedor Negro','Contenedor Verde'],c:0,tip:'Los residuos orgánicos van al marrón y sirven para hacer compost.'},
-{q:'¿Por qué es peligroso quemar basura a cielo abierto?',o:['Porque enfría el ambiente','Porque libera humo y gases tóxicos','Porque mejora el suelo'],c:1,tip:'La quema emite dioxinas y partículas dañinas para los pulmones.'}
-];
-var qBox=$('#quiz'),qIdx=0,qPts=0;
-function startQuiz(){qIdx=0;qPts=0;renderQuiz()}
-function renderQuiz(){
-if(qIdx>=QUIZ.length){
-var finalPoints=qPts;
-var percentage=Math.round(finalPoints/QUIZ.length*100);
-var msg=finalPoints===QUIZ.length?'¡Puntaje perfecto! Eres un guardián del planeta.':finalPoints>=4?'¡Muy bien! Sabes cuidar el ambiente.':'¡Buen intento! Sigue explorando la página y vuelve a jugar.';
-qBox.innerHTML='<div class="qend"><div class="kick">Resultado final</div><b>'+finalPoints+' / '+QUIZ.length+'</b><p class="lead" style="margin:0 auto .45rem">'+msg+'</p><p class="quiz-final-percent">Tu resultado: <strong>'+percentage+'%</strong></p><form id="quiz-score-form" class="quiz-score-form"><label for="quiz-nickname">Escribe un apodo para aparecer en el top</label><input id="quiz-nickname" name="nickname" type="text" maxlength="20" minlength="2" autocomplete="nickname" placeholder="Tu apodo" required><button class="qbtn" id="quiz-save-score" type="submit">Guardar puntaje</button><p id="quiz-save-status" role="status" aria-live="polite"></p></form><button class="qbtn" id="qre" type="button">Volver a jugar</button></div>';
-var scoreForm=$('#quiz-score-form',qBox);
-scoreForm.addEventListener('submit',async function(e){
- e.preventDefault();
- var nick=$('#quiz-nickname',scoreForm).value.trim();
- var saveButton=$('#quiz-save-score',scoreForm);
- var saveStatus=$('#quiz-save-status',scoreForm);
- if(nick.length<2||nick.length>20){saveStatus.textContent='El apodo debe tener entre 2 y 20 caracteres.';return;}
- if(!commentClient){saveStatus.textContent='No hay conexión con Supabase. El ranking aún no está disponible.';return;}
- saveButton.disabled=true;
- saveStatus.textContent='Guardando tu puntaje…';
- try{
-  var saved=await commentClient.from('quiz_scores').insert({nickname:nick,correct_answers:finalPoints,total_questions:QUIZ.length});
-  if(saved.error)throw saved.error;
-  $('#quiz-nickname',scoreForm).disabled=true;
-  var refreshed=await loadQuizLeaderboard(true);
-  saveStatus.textContent=refreshed?'¡Puntaje guardado! Ya estás en el ranking de hoy.':'¡Puntaje guardado! El ranking se actualizará cuando vuelva a cargar.';
- }catch(err){
-  console.error('[ranking] No se pudo guardar el puntaje:',err);
-  saveStatus.textContent='No se pudo guardar. Comprueba que la tabla quiz_scores esté creada en Supabase.';
-  saveButton.disabled=false;
- }
-});
-$('#qre',qBox).onclick=startQuiz;
-if(finalPoints>=5)leaves();
-return;
-}
-var item=QUIZ[qIdx],lets=['A','B','C'];
-qBox.innerHTML='<div class="qhead"><span class="qstep">Pregunta '+(qIdx+1)+' de '+QUIZ.length+'</span><span class="qscore">Puntos: '+qPts+'</span></div>'+
-'<h3 class="qtxt">'+item.q+'</h3>'+
-'<div class="qopts">'+item.o.map(function(txt,i){return'<button class="qopt" data-i="'+i+'"><span class="qlet">'+lets[i]+'</span><span>'+txt+'</span></button>'}).join('')+'</div>'+
-'<div class="qfb" id="qfb" aria-live="polite"></div>'+
-'<div class="qfoot"><button class="qbtn" id="qnxt" hidden>'+(qIdx===QUIZ.length-1?'Ver resultado':'Siguiente ›')+'</button></div>';
-var btns=$$('.qopt',qBox),fbEl=$('#qfb',qBox),nxt=$('#qnxt',qBox);
-btns.forEach(function(b){
-b.onclick=function(){
-var pick=+b.dataset.i;
-btns.forEach(function(x){x.disabled=true});
-if(pick===item.c){
-b.classList.add('ok');
-qPts++;
-$('.qscore',qBox).textContent='Puntos: '+qPts;
-fbEl.textContent='¡Correcto! '+item.tip;
-}else{
-b.classList.add('bad');
-btns[item.c].classList.add('ok');
-fbEl.textContent='Incorrecto. '+item.tip;
-}
-nxt.hidden=false;
+/* ---------- MINIJUEGO QUIZ POR NIVELES ---------- */
+var QUIZ_BANKS={
+1:[
+{q:'¿Qué significa la primera R de las 3R?',o:['Reducir','Recoger','Reparar'],c:0,tip:'Reducir significa consumir menos y evitar residuos.'},
+{q:'¿Qué residuo puede convertirse en compost?',o:['Cáscaras de frutas','Pilas usadas','Botellas de vidrio'],c:0,tip:'Los restos orgánicos pueden transformarse en compost.'},
+{q:'¿Qué debemos hacer con una botella reutilizable?',o:['Usarla varias veces','Botarla después de usarla','Quemarla'],c:0,tip:'Reutilizar ayuda a generar menos basura.'},
+{q:'¿Cuál de estos residuos tarda mucho en degradarse?',o:['Botella de plástico','Cáscara de plátano','Hojas secas'],c:0,tip:'Muchos plásticos permanecen en el ambiente durante mucho tiempo.'},
+{q:'¿Qué acción ahorra agua en casa?',o:['Cerrar el caño al cepillarse','Dejar correr el agua','Lavar veredas con manguera'],c:0,tip:'Cerrar el caño evita desperdiciar agua potable.'},
+{q:'¿Dónde deben ir las pilas usadas?',o:['En un punto de acopio especial','Con restos de comida','En cualquier jardín'],c:0,tip:'Las pilas requieren una recolección especial.'},
+{q:'¿Qué es reciclar?',o:['Transformar residuos en nuevos materiales','Comprar más productos','Mezclar toda la basura'],c:0,tip:'El reciclaje aprovecha materiales para fabricar nuevos productos.'},
+{q:'¿Qué ayuda a mantener limpio el colegio?',o:['Usar los tachos adecuados','Dejar envolturas en el patio','Esconder la basura'],c:0,tip:'Separar y depositar bien los residuos mantiene los espacios limpios.'},
+{q:'¿Cuál es un residuo orgánico?',o:['Restos de verduras','Lata de conserva','Bolsa de plástico'],c:0,tip:'Los restos vegetales se descomponen naturalmente.'},
+{q:'¿Qué se debe hacer antes de reciclar un envase?',o:['Vaciarlo y limpiarlo si corresponde','Llenarlo de tierra','Mezclarlo con comida'],c:0,tip:'Los envases limpios facilitan el aprovechamiento del material.'}
+],
+2:[
+{q:'¿Por qué conviene separar los residuos en origen?',o:['Facilita su aprovechamiento y reciclaje','Hace que pesen más','Evita que se recojan'],c:0,tip:'Separarlos desde el lugar donde se generan mejora su manejo.'},
+{q:'¿Qué problema puede causar la quema de basura?',o:['Contaminación del aire','Más oxígeno limpio','Mejor calidad del suelo'],c:0,tip:'El humo puede contener partículas y gases perjudiciales.'},
+{q:'¿Qué significa economía circular?',o:['Mantener materiales en uso y reducir residuos','Comprar y desechar rápidamente','Usar un producto una sola vez'],c:0,tip:'Busca aprovechar los recursos durante más tiempo.'},
+{q:'¿Qué acción reduce residuos de un solo uso?',o:['Llevar bolsa reutilizable','Pedir una bolsa nueva siempre','Usar más envolturas'],c:0,tip:'Los objetos reutilizables disminuyen los desechables.'},
+{q:'¿Qué puede ocurrir si los residuos llegan a los ríos?',o:['Afectan a los ecosistemas acuáticos','Purifican el agua','Aumentan el oxígeno automáticamente'],c:0,tip:'La basura puede dañar especies y contaminar el agua.'},
+{q:'¿Qué es el compostaje?',o:['Descomposición controlada de residuos orgánicos','Quema de plásticos','Mezcla de pilas con papel'],c:0,tip:'El compostaje transforma restos orgánicos en abono.'},
+{q:'¿Por qué no se deben mezclar pilas con residuos comunes?',o:['Pueden liberar sustancias contaminantes','Se convierten en alimento','Desaparecen de inmediato'],c:0,tip:'Deben manejarse mediante sistemas de recolección especial.'},
+{q:'¿Qué medida ayuda a reducir el consumo de energía?',o:['Apagar luces que no se usan','Dejar equipos encendidos','Abrir el refrigerador por mucho tiempo'],c:0,tip:'Evitar consumos innecesarios ahorra energía.'},
+{q:'¿Qué efecto tiene la pérdida de áreas verdes?',o:['Reduce hábitats y servicios ambientales','Aumenta la biodiversidad siempre','Elimina la contaminación'],c:0,tip:'Las áreas verdes ofrecen refugio a especies y ayudan al entorno.'},
+{q:'¿Qué información debe tener una campaña de segregación?',o:['Qué residuos van en cada recipiente','Solo dibujos sin explicación','Mensajes que confundan los colores'],c:0,tip:'Las indicaciones claras ayudan a separar correctamente.'}
+],
+3:[
+{q:'¿Qué diferencia hay entre reutilizar y reciclar?',o:['Reutilizar usa de nuevo; reciclar transforma el material','Son exactamente lo mismo','Reciclar significa quemar'],c:0,tip:'Reutilizar prolonga el uso; reciclar convierte el material en otro recurso.'},
+{q:'¿Por qué los microplásticos preocupan a los ecosistemas?',o:['Pueden entrar en las cadenas alimentarias','Se convierten en oxígeno','Solo existen en desiertos'],c:0,tip:'Son partículas pequeñas que pueden ser ingeridas por organismos.'},
+{q:'¿Qué es la huella de carbono?',o:['Emisiones de gases de efecto invernadero asociadas a una actividad','Cantidad de basura en una mochila','Medida de la lluvia'],c:0,tip:'Permite estimar el impacto climático de actividades y productos.'},
+{q:'¿Qué práctica mejora el reciclaje de papel?',o:['Mantenerlo limpio y seco','Mojarlo con aceite','Mezclarlo con restos de comida'],c:0,tip:'El papel limpio y seco es más fácil de recuperar.'},
+{q:'¿Qué relación existe entre deforestación y biodiversidad?',o:['La deforestación puede destruir hábitats','La deforestación siempre crea hábitats','No existe relación'],c:0,tip:'Al perder bosques, muchas especies pierden su espacio de vida.'},
+{q:'¿Qué principio debe guiar el manejo responsable de residuos?',o:['Prevenir y reducir antes de desechar','Desechar todo junto','Priorizar productos descartables'],c:0,tip:'La prevención evita generar residuos desde el inicio.'},
+{q:'¿Por qué es importante la gestión adecuada de residuos electrónicos?',o:['Pueden contener materiales que requieren tratamiento especial','Todos son biodegradables','Se deben quemar al aire libre'],c:0,tip:'Los aparatos electrónicos necesitan recolección y tratamiento adecuados.'},
+{q:'¿Qué medida ayuda a enfrentar el cambio climático desde la comunidad?',o:['Ahorrar energía y promover transporte sostenible','Quemar residuos','Desperdiciar agua'],c:0,tip:'Las acciones cotidianas pueden reducir emisiones.'},
+{q:'¿Qué indicador refleja mejor una campaña escolar de reciclaje?',o:['Cantidad de residuos separados correctamente','Número de afiches sin evaluar','Cantidad de tachos sin usar'],c:0,tip:'Medir la separación correcta permite evaluar resultados reales.'},
+{q:'¿Por qué es importante evaluar una iniciativa ambiental después de aplicarla?',o:['Para saber si logró resultados y cómo mejorarla','Para evitar medir sus efectos','Para reemplazar todas las acciones sin revisarlas'],c:0,tip:'La evaluación permite reconocer avances y corregir lo que no funciona.'}
+]
 };
-});
-nxt.onclick=function(){qIdx++;renderQuiz()};
+var QUIZ_PER_LEVEL=6,QUIZ_PASS=4,QUIZ_TOTAL=18;
+var qBox=$('#quiz'),qLevel=1,qIdx=0,qTotalPts=0,qLevelPts=0,qSet=[],qStartedAt=0,qLastLevelPts=0;
+function shuffleQuiz(items){var copy=items.slice();for(var i=copy.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=copy[i];copy[i]=copy[j];copy[j]=t;}return copy;}
+function prepareQuizLevel(){
+ qSet=shuffleQuiz(QUIZ_BANKS[qLevel]).slice(0,QUIZ_PER_LEVEL).map(function(item){
+  var choices=shuffleQuiz(item.o.map(function(text,index){return{text:text,correct:index===item.c}}));
+  return{q:item.q,o:choices.map(function(x){return x.text}),c:choices.findIndex(function(x){return x.correct}),tip:item.tip};
+ });
+ qIdx=0;qLevelPts=0;
+}
+function startQuiz(){qLevel=1;qTotalPts=0;qStartedAt=Date.now();prepareQuizLevel();renderQuiz();}
+function finishQuiz(){
+ var elapsed=Math.max(0,Date.now()-qStartedAt),percentage=Math.round(qTotalPts/QUIZ_TOTAL*100);
+ var msg=qTotalPts===QUIZ_TOTAL?'¡Reto perfecto! Dominaste los tres niveles.':qLevel===3?'¡Llegaste al nivel final! Buen trabajo.':'¡Buen intento! Sigue practicando para superar todos los niveles.';
+ qBox.innerHTML='<div class="qend"><div class="kick">Reto completado</div><b>'+qTotalPts+' / '+QUIZ_TOTAL+'</b><p class="lead" style="margin:0 auto .45rem">'+msg+'</p><p class="quiz-final-percent">Tu resultado: <strong>'+percentage+'%</strong></p><p class="quiz-final-percent">Nivel alcanzado: <strong>'+qLevel+' de 3</strong></p><form id="quiz-score-form" class="quiz-score-form"><label for="quiz-nickname">Escribe un apodo para aparecer en el top</label><input id="quiz-nickname" name="nickname" type="text" maxlength="20" minlength="2" autocomplete="nickname" placeholder="Tu apodo" required><button class="qbtn" id="quiz-save-score" type="submit">Guardar puntaje</button><p id="quiz-save-status" role="status" aria-live="polite"></p></form><button class="qbtn" id="qre" type="button">Volver a jugar</button></div>';
+ var scoreForm=$('#quiz-score-form',qBox);
+ scoreForm.addEventListener('submit',async function(e){
+  e.preventDefault();var nick=$('#quiz-nickname',scoreForm).value.trim(),saveButton=$('#quiz-save-score',scoreForm),saveStatus=$('#quiz-save-status',scoreForm);
+  if(nick.length<2||nick.length>20){saveStatus.textContent='El apodo debe tener entre 2 y 20 caracteres.';return;}
+  if(!commentClient){saveStatus.textContent='No hay conexión con Supabase. El ranking aún no está disponible.';return;}
+  saveButton.disabled=true;saveStatus.textContent='Guardando tu puntaje…';
+  try{
+   var saved=await commentClient.from('quiz_scores').insert({nickname:nick,correct_answers:qLastLevelPts,total_questions:QUIZ_PER_LEVEL,total_points:qTotalPts,level_reached:qLevel,elapsed_ms:elapsed});
+   if(saved.error)throw saved.error;$('#quiz-nickname',scoreForm).disabled=true;
+   var refreshed=await loadQuizLeaderboard(true);saveStatus.textContent=refreshed?'¡Puntaje guardado! Ya estás en el ranking de hoy.':'¡Puntaje guardado! El ranking se actualizará cuando vuelva a cargar.';
+  }catch(err){console.error('[ranking] No se pudo guardar el puntaje:',err);saveStatus.textContent='No se pudo guardar. Revisa la configuración de quiz_scores en Supabase.';saveButton.disabled=false;}
+ });
+ $('#qre',qBox).onclick=startQuiz;if(qTotalPts>=12)leaves();
+}
+function renderQuiz(){
+ if(qIdx>=QUIZ_PER_LEVEL){
+  qTotalPts+=qLevelPts;qLastLevelPts=qLevelPts;
+  var passed=qLevelPts>=QUIZ_PASS,isFinal=qLevel===3,nextLevel=qLevel+1,pct=Math.round(qLevelPts/QUIZ_PER_LEVEL*100);
+  var action=isFinal?'<button class="qbtn" id="qfinish" type="button">Ver resultado final</button>':passed?'<button class="qbtn" id="qnextlevel" type="button">Pasar al nivel '+nextLevel+' ›</button>':'<button class="qbtn" id="qretry" type="button">Reintentar nivel '+qLevel+'</button><button class="qbtn" id="qfinish" type="button">Guardar resultado y terminar</button>';
+  qBox.innerHTML='<div class="qend"><div class="kick">Nivel '+qLevel+' '+(isFinal?'finalizado':'completado')+'</div><b>'+qLevelPts+' / '+QUIZ_PER_LEVEL+'</b><p class="quiz-final-percent">Resultado del nivel: <strong>'+pct+'%</strong></p><p class="lead" style="margin:0 auto 1rem">'+(passed?(isFinal?'¡Superaste el nivel final!':'¡Nivel superado! Ya puedes avanzar.'):'Necesitas al menos '+QUIZ_PASS+' respuestas correctas para desbloquear el siguiente nivel.')+'</p><p class="quiz-final-percent">Puntaje acumulado: <strong>'+qTotalPts+' / '+QUIZ_TOTAL+'</strong></p>'+action+'</div>';
+  if(isFinal||!passed)$('#qfinish',qBox).onclick=finishQuiz;
+  if(passed&&!isFinal)$('#qnextlevel',qBox).onclick=function(){qLevel=nextLevel;prepareQuizLevel();renderQuiz();};
+  if(!passed)$('#qretry',qBox).onclick=function(){prepareQuizLevel();renderQuiz();};
+  return;
+ }
+ var item=qSet[qIdx],lets=['A','B','C'];
+ qBox.innerHTML='<div class="qhead"><span class="qstep">Nivel '+qLevel+' · Pregunta '+(qIdx+1)+' de '+QUIZ_PER_LEVEL+'</span><span class="qscore">Puntos: '+qLevelPts+'</span></div><h3 class="qtxt">'+item.q+'</h3><div class="qopts">'+item.o.map(function(txt,i){return'<button class="qopt" data-i="'+i+'"><span class="qlet">'+lets[i]+'</span><span>'+txt+'</span></button>'}).join('')+'</div><div class="qfb" id="qfb" aria-live="polite"></div><div class="qfoot"><button class="qbtn" id="qnxt" hidden>'+(qIdx===QUIZ_PER_LEVEL-1?'Terminar nivel':'Siguiente ›')+'</button></div>';
+ var btns=$$('.qopt',qBox),fbEl=$('#qfb',qBox),nxt=$('#qnxt',qBox);
+ btns.forEach(function(b){b.onclick=function(){var pick=+b.dataset.i;btns.forEach(function(x){x.disabled=true});if(pick===item.c){b.classList.add('ok');qLevelPts++;$('.qscore',qBox).textContent='Puntos: '+qLevelPts;fbEl.textContent='¡Correcto! '+item.tip;}else{b.classList.add('bad');btns[item.c].classList.add('ok');fbEl.textContent='Incorrecto. '+item.tip;}nxt.hidden=false;};});
+ nxt.onclick=function(){qIdx++;renderQuiz();};
 }
 startQuiz();
+/* ---------- FIN MINIJUEGO QUIZ POR NIVELES ---------- */
 /* ---------- COMENTARIOS PÚBLICOS CON SUPABASE ---------- */
 var SUPABASE_URL='https://xqfbmcunhpbxpdafchof.supabase.co';
 var SUPABASE_PUBLISHABLE_KEY='sb_publishable_sN8i9BnWaFtV8AdDTnIoOw_DaQ-se9h';
@@ -1011,34 +1028,27 @@ function limaDayKey(){
  return p.year+'-'+p.month+'-'+p.day;
 }
 function renderQuizLeaderboard(rows){
- quizBoardList.replaceChildren();
- var bestByNickname=Object.create(null);
+ quizBoardList.replaceChildren();var bestByNickname=Object.create(null);
  rows.forEach(function(row){
-  var key=String(row.nickname||'').trim().toLocaleLowerCase('es-PE');
-  if(!key)return;
-  var prev=bestByNickname[key];
-  var score=Number(row.correct_answers)||0;
-  var oldScore=prev?Number(prev.correct_answers)||0:-1;
-  if(!prev||score>oldScore||(score===oldScore&&Date.parse(row.created_at)<Date.parse(prev.created_at)))bestByNickname[key]=row;
+  var key=String(row.nickname||'').trim().toLocaleLowerCase('es-PE');if(!key)return;
+  var prev=bestByNickname[key],points=Number(row.total_points)||0,old=prev?Number(prev.total_points)||0:-1;
+  var level=Number(row.level_reached)||1,oldLevel=prev?Number(prev.level_reached)||1:0;
+  var better=!prev||points>old||(points===old&&level>oldLevel)||(points===old&&level===oldLevel&&(Number(row.elapsed_ms)||0)<(Number(prev.elapsed_ms)||0));
+  if(better)bestByNickname[key]=row;
  });
  var players=Object.keys(bestByNickname).map(function(k){return bestByNickname[k]});
- players.sort(function(a,b){
-  var diff=Number(b.correct_answers)-Number(a.correct_answers);
-  return diff||Date.parse(a.created_at)-Date.parse(b.created_at);
- });
+ players.sort(function(a,b){return(Number(b.total_points)||0)-(Number(a.total_points)||0)||(Number(b.level_reached)||1)-(Number(a.level_reached)||1)||(Number(a.elapsed_ms)||0)-(Number(b.elapsed_ms)||0)||(Date.parse(a.created_at)||0)-(Date.parse(b.created_at)||0)||(Number(a.id)||0)-(Number(b.id)||0);});
  players=players.slice(0,10);
- if(!players.length){
-  var empty=document.createElement('li');empty.className='quiz-board-empty';empty.textContent='Todavía no hay puntajes hoy. ¡Sé el primero en jugar!';quizBoardList.appendChild(empty);return;
- }
+ if(!players.length){var empty=document.createElement('li');empty.className='quiz-board-empty';empty.textContent='Todavía no hay puntajes hoy. ¡Sé el primero en jugar!';quizBoardList.appendChild(empty);return;}
  players.forEach(function(player,index){
   var row=document.createElement('li');row.className='quiz-board-row';
   var rank=document.createElement('span');rank.className='quiz-board-rank';rank.textContent=String(index+1)+'.';
   var name=document.createElement('span');name.className='quiz-board-name';name.textContent=player.nickname;
   var score=document.createElement('span');score.className='quiz-board-score';
-  var correct=Number(player.correct_answers)||0,total=Number(player.total_questions)||QUIZ.length;
-  score.textContent=Math.round(correct/total*100)+'%';
-  var detail=document.createElement('small');detail.textContent=correct+' de '+total+' correctas';score.appendChild(detail);
-  row.append(rank,name,score);quizBoardList.appendChild(row);
+  var points=Number(player.total_points)||0,level=Number(player.level_reached)||1;
+  score.textContent=Math.round(points/QUIZ_TOTAL*100)+'%';
+  var detail=document.createElement('small');detail.textContent=points+' de '+QUIZ_TOTAL+' puntos · Nivel '+level;
+  score.appendChild(detail);row.append(rank,name,score);quizBoardList.appendChild(row);
  });
 }
 async function loadQuizLeaderboard(silent){
@@ -1048,7 +1058,7 @@ async function loadQuizLeaderboard(silent){
   var start=new Date(day+'T00:00:00-05:00');
   var end=new Date(start.getTime()+86400000);
   quizBoardDate.textContent='Puntajes de '+new Intl.DateTimeFormat('es-PE',{timeZone:'America/Lima',dateStyle:'long'}).format(new Date());
-  var result=await commentClient.from('quiz_scores').select('nickname,correct_answers,total_questions,created_at').gte('created_at',start.toISOString()).lt('created_at',end.toISOString()).order('correct_answers',{ascending:false}).order('created_at',{ascending:true}).limit(500);
+  var result=await commentClient.from('quiz_scores').select('id,nickname,correct_answers,total_questions,total_points,level_reached,elapsed_ms,created_at').gte('created_at',start.toISOString()).lt('created_at',end.toISOString()).order('total_points',{ascending:false}).order('level_reached',{ascending:false}).order('elapsed_ms',{ascending:true}).order('created_at',{ascending:true}).order('id',{ascending:true}).limit(500);
   if(result.error)throw result.error;
   renderQuizLeaderboard(result.data||[]);
   quizBoardStatus.textContent='';
