@@ -815,11 +815,13 @@ function finishQuiz(){
 }
 function renderQuiz(){
  if(qIdx>=QUIZ_PER_LEVEL){
-  qTotalPts+=qLevelPts;qLastLevelPts=qLevelPts;
+  qLastLevelPts=qLevelPts;
   var passed=qLevelPts>=QUIZ_PASS,isFinal=qLevel===3,nextLevel=qLevel+1,pct=Math.round(qLevelPts/QUIZ_PER_LEVEL*100);
+  if(passed||isFinal)qTotalPts+=qLevelPts;
   var action=isFinal?'<button class="qbtn" id="qfinish" type="button">Ver resultado final</button>':passed?'<button class="qbtn" id="qnextlevel" type="button">Pasar al nivel '+nextLevel+' ›</button>':'<button class="qbtn" id="qretry" type="button">Reintentar nivel '+qLevel+'</button><button class="qbtn" id="qfinish" type="button">Guardar resultado y terminar</button>';
   qBox.innerHTML='<div class="qend"><div class="kick">Nivel '+qLevel+' '+(isFinal?'finalizado':'completado')+'</div><b>'+qLevelPts+' / '+QUIZ_PER_LEVEL+'</b><p class="quiz-final-percent">Resultado del nivel: <strong>'+pct+'%</strong></p><p class="lead" style="margin:0 auto 1rem">'+(passed?(isFinal?'¡Superaste el nivel final!':'¡Nivel superado! Ya puedes avanzar.'):'Necesitas al menos '+QUIZ_PASS+' respuestas correctas para desbloquear el siguiente nivel.')+'</p><p class="quiz-final-percent">Puntaje acumulado: <strong>'+qTotalPts+' / '+QUIZ_TOTAL+'</strong></p>'+action+'</div>';
-  if(isFinal||!passed)$('#qfinish',qBox).onclick=finishQuiz;
+  if(isFinal)$('#qfinish',qBox).onclick=finishQuiz;
+  else if(!passed)$('#qfinish',qBox).onclick=function(){qTotalPts+=qLevelPts;finishQuiz();};
   if(passed&&!isFinal)$('#qnextlevel',qBox).onclick=function(){qLevel=nextLevel;prepareQuizLevel();renderQuiz();};
   if(!passed)$('#qretry',qBox).onclick=function(){prepareQuizLevel();renderQuiz();};
   return;
