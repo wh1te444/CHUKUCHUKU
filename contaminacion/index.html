@@ -198,6 +198,22 @@ section.sheet{padding:0}
 .qend{text-align:center;padding:1rem 0}
 .qend b{display:block;font:400 clamp(3rem,10vw,4.5rem)/1 var(--fx);color:var(--g1);margin:.4rem 0}
 
+.quiz-board{margin:1.5rem 0 2rem;padding:clamp(1rem,3vw,1.5rem);background:linear-gradient(145deg,rgba(18,28,19,.96),rgba(10,16,11,.96));border:1px solid var(--bd);border-radius:8px 26px 8px 26px;box-shadow:0 12px 30px rgba(0,0,0,.24)}
+.quiz-board-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-bottom:1rem;border-bottom:1px dashed var(--bd)}
+.quiz-board-head h3{margin:.2rem 0;color:var(--g1);font:900 clamp(1.6rem,5vw,2.2rem)/1 var(--fh);letter-spacing:.05em;text-transform:uppercase}
+.quiz-board-head p{margin:.35rem 0 0;color:var(--mut);font:400 .95rem var(--fb)}
+.quiz-board-cap{flex:none;padding:.45rem .75rem;border:1px solid var(--sand);border-radius:999px;color:var(--sand);font:900 .85rem var(--fh);letter-spacing:.1em}
+.quiz-board-list{list-style:none;padding:0;margin:0;display:grid;gap:.55rem}
+.quiz-board-row{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:.75rem;padding:.75rem .85rem;background:rgba(255,255,255,.025);border:1px solid rgba(143,209,111,.12);border-radius:8px}
+.quiz-board-rank{font:900 1.25rem var(--fh);color:var(--sand);text-align:center}
+.quiz-board-row:first-child{background:linear-gradient(90deg,rgba(143,209,111,.14),rgba(255,255,255,.025));border-color:rgba(143,209,111,.42)}
+.quiz-board-row:first-child .quiz-board-rank{color:var(--g1);font-size:1.55rem}
+.quiz-board-name{min-width:0;overflow-wrap:anywhere;color:var(--ink);font:700 1.08rem var(--fb)}
+.quiz-board-score{text-align:right;color:var(--g1);font:900 1.15rem var(--fh);white-space:nowrap}
+.quiz-board-score small{display:block;color:var(--mut);font:400 .78rem var(--fb)}
+.quiz-board-empty{padding:1rem;text-align:center;color:var(--mut);font:400 1rem var(--fb)}
+.quiz-board-status{min-height:1.2em;margin:.7rem 0 0;color:var(--mut);font:400 .88rem var(--fb)}
+@media(max-width:500px){.quiz-board-row{grid-template-columns:30px minmax(0,1fr) auto;gap:.55rem;padding:.65rem}.quiz-board-name{font-size:1rem}.quiz-board-score{font-size:1rem}.quiz-board-cap{font-size:.75rem}}
 /* ===== CARGA 3R ===== */
 #intro{position:fixed;inset:0;z-index:300;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 42%,#2f8a47,#0f3d1f 75%);animation:iout .75s 2.8s forwards}
 #intro.dead{display:none}
@@ -552,6 +568,14 @@ section.sheet{padding:0}
 <h2 class="rv"><span>Quiz ecológico</span></h2>
 <p class="lead rv">Responde estas preguntas básicas sobre reciclaje y residuos. ¡Demuestra cuánto sabes!</p>
 <div class="quiz-box rv" id="quiz"></div>
+<div class="quiz-board rv" aria-labelledby="quiz-board-title">
+ <div class="quiz-board-head">
+  <div><span class="kick">Ranking diario</span><h3 id="quiz-board-title">Top del quiz</h3><p id="quiz-board-date">Cargando el ranking de hoy…</p></div>
+  <span class="quiz-board-cap">TOP 10</span>
+ </div>
+ <ol class="quiz-board-list" id="quiz-board-list" aria-live="polite"><li class="quiz-board-empty">Cargando puntajes…</li></ol>
+ <p class="quiz-board-status" id="quiz-board-status" role="status"></p>
+</div>
 </div></section>
 <script>
 (function(){
@@ -726,10 +750,34 @@ var qBox=$('#quiz'),qIdx=0,qPts=0;
 function startQuiz(){qIdx=0;qPts=0;renderQuiz()}
 function renderQuiz(){
 if(qIdx>=QUIZ.length){
-var msg=qPts===QUIZ.length?'¡Puntaje perfecto! Eres un guardián del planeta.':qPts>=4?'¡Muy bien! Sabes cuidar el ambiente.':'¡Buen intento! Sigue explorando la página y vuelve a jugar.';
-qBox.innerHTML='<div class="qend"><div class="kick">Resultado final</div><b>'+qPts+' / '+QUIZ.length+'</b><p class="lead" style="margin:0 auto 1.4rem">'+msg+'</p><button class="qbtn" id="qre">Volver a jugar</button></div>';
+var finalPoints=qPts;
+var percentage=Math.round(finalPoints/QUIZ.length*100);
+var msg=finalPoints===QUIZ.length?'¡Puntaje perfecto! Eres un guardián del planeta.':finalPoints>=4?'¡Muy bien! Sabes cuidar el ambiente.':'¡Buen intento! Sigue explorando la página y vuelve a jugar.';
+qBox.innerHTML='<div class="qend"><div class="kick">Resultado final</div><b>'+finalPoints+' / '+QUIZ.length+'</b><p class="lead" style="margin:0 auto .45rem">'+msg+'</p><p class="quiz-final-percent">Tu resultado: <strong>'+percentage+'%</strong></p><form id="quiz-score-form" class="quiz-score-form"><label for="quiz-nickname">Escribe un apodo para aparecer en el top</label><input id="quiz-nickname" name="nickname" type="text" maxlength="20" minlength="2" autocomplete="nickname" placeholder="Tu apodo" required><button class="qbtn" id="quiz-save-score" type="submit">Guardar puntaje</button><p id="quiz-save-status" role="status" aria-live="polite"></p></form><button class="qbtn" id="qre" type="button">Volver a jugar</button></div>';
+var scoreForm=$('#quiz-score-form',qBox);
+scoreForm.addEventListener('submit',async function(e){
+ e.preventDefault();
+ var nick=$('#quiz-nickname',scoreForm).value.trim();
+ var saveButton=$('#quiz-save-score',scoreForm);
+ var saveStatus=$('#quiz-save-status',scoreForm);
+ if(nick.length<2||nick.length>20){saveStatus.textContent='El apodo debe tener entre 2 y 20 caracteres.';return;}
+ if(!commentClient){saveStatus.textContent='No hay conexión con Supabase. El ranking aún no está disponible.';return;}
+ saveButton.disabled=true;
+ saveStatus.textContent='Guardando tu puntaje…';
+ try{
+  var saved=await commentClient.from('quiz_scores').insert({nickname:nick,correct_answers:finalPoints,total_questions:QUIZ.length});
+  if(saved.error)throw saved.error;
+  $('#quiz-nickname',scoreForm).disabled=true;
+  var refreshed=await loadQuizLeaderboard(true);
+  saveStatus.textContent=refreshed?'¡Puntaje guardado! Ya estás en el ranking de hoy.':'¡Puntaje guardado! El ranking se actualizará cuando vuelva a cargar.';
+ }catch(err){
+  console.error('[ranking] No se pudo guardar el puntaje:',err);
+  saveStatus.textContent='No se pudo guardar. Comprueba que la tabla quiz_scores esté creada en Supabase.';
+  saveButton.disabled=false;
+ }
+});
 $('#qre',qBox).onclick=startQuiz;
-if(qPts>=5)leaves();
+if(finalPoints>=5)leaves();
 return;
 }
 var item=QUIZ[qIdx],lets=['A','B','C'];
@@ -944,6 +992,70 @@ commentsForm.addEventListener('submit',async function(e){
 
 var commentSetupMessage='';
 setupComments();
+
+var quizBoardList=$('#quiz-board-list');
+var quizBoardDate=$('#quiz-board-date');
+var quizBoardStatus=$('#quiz-board-status');
+
+function limaDayKey(){
+ var parts=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Lima',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+ var p={};parts.forEach(function(x){p[x.type]=x.value});
+ return p.year+'-'+p.month+'-'+p.day;
+}
+function renderQuizLeaderboard(rows){
+ quizBoardList.replaceChildren();
+ var bestByNickname=Object.create(null);
+ rows.forEach(function(row){
+  var key=String(row.nickname||'').trim().toLocaleLowerCase('es-PE');
+  if(!key)return;
+  var prev=bestByNickname[key];
+  var score=Number(row.correct_answers)||0;
+  var oldScore=prev?Number(prev.correct_answers)||0:-1;
+  if(!prev||score>oldScore||(score===oldScore&&Date.parse(row.created_at)<Date.parse(prev.created_at)))bestByNickname[key]=row;
+ });
+ var players=Object.keys(bestByNickname).map(function(k){return bestByNickname[k]});
+ players.sort(function(a,b){
+  var diff=Number(b.correct_answers)-Number(a.correct_answers);
+  return diff||Date.parse(a.created_at)-Date.parse(b.created_at);
+ });
+ players=players.slice(0,10);
+ if(!players.length){
+  var empty=document.createElement('li');empty.className='quiz-board-empty';empty.textContent='Todavía no hay puntajes hoy. ¡Sé el primero en jugar!';quizBoardList.appendChild(empty);return;
+ }
+ players.forEach(function(player,index){
+  var row=document.createElement('li');row.className='quiz-board-row';
+  var rank=document.createElement('span');rank.className='quiz-board-rank';rank.textContent=String(index+1)+'.';
+  var name=document.createElement('span');name.className='quiz-board-name';name.textContent=player.nickname;
+  var score=document.createElement('span');score.className='quiz-board-score';
+  var correct=Number(player.correct_answers)||0,total=Number(player.total_questions)||QUIZ.length;
+  score.textContent=Math.round(correct/total*100)+'%';
+  var detail=document.createElement('small');detail.textContent=correct+' de '+total+' correctas';score.appendChild(detail);
+  row.append(rank,name,score);quizBoardList.appendChild(row);
+ });
+}
+async function loadQuizLeaderboard(silent){
+ if(!commentClient){quizBoardList.innerHTML='<li class="quiz-board-empty">Conectando con el ranking…</li>';if(!silent)quizBoardStatus.textContent='';return false;}
+ try{
+  var day=limaDayKey();
+  var start=new Date(day+'T00:00:00-05:00');
+  var end=new Date(start.getTime()+86400000);
+  quizBoardDate.textContent='Puntajes de '+new Intl.DateTimeFormat('es-PE',{timeZone:'America/Lima',dateStyle:'long'}).format(new Date());
+  var result=await commentClient.from('quiz_scores').select('nickname,correct_answers,total_questions,created_at').gte('created_at',start.toISOString()).lt('created_at',end.toISOString()).order('correct_answers',{ascending:false}).order('created_at',{ascending:true}).limit(500);
+  if(result.error)throw result.error;
+  renderQuizLeaderboard(result.data||[]);
+  quizBoardStatus.textContent='';
+  return true;
+ }catch(err){
+  console.error('[ranking] Error al cargar el top:',err);
+  quizBoardList.innerHTML='<li class="quiz-board-empty">Aún no se pudo cargar el ranking.</li>';
+  quizBoardStatus.textContent='Revisa que public.quiz_scores esté creada y tenga permiso de lectura en Supabase.';
+  return false;
+ }
+}
+loadQuizLeaderboard(false);
+window.setInterval(function(){if(!document.hidden)loadQuizLeaderboard(true)},60000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)loadQuizLeaderboard(true)});
+
 updateWordCount();
 if(!commentClient){showCommentsMessage(commentSetupMessage || 'No se pudo iniciar la conexión con los comentarios.');}
 
