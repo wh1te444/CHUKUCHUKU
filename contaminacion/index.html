@@ -55,13 +55,7 @@ section.sheet{padding:0}
 .nav a{font:700 1.05rem var(--fh);letter-spacing:.09em;text-transform:uppercase;text-decoration:none;position:relative;padding:.3rem 0;transition:color .3s}
 .nav a::after{content:"";position:absolute;left:-4px;right:-4px;bottom:2px;height:.5em;background:rgba(143,209,111,.4);z-index:-1;transform:scaleX(0);transform-origin:left;transition:transform .3s}
 .nav a:hover{color:var(--g1)}.nav a:hover::after{transform:scaleX(1)}
-#burger{display:none;background:none;border:2px solid var(--g1);color:var(--g1);width:42px;height:42px;border-radius:10px;font-size:1.2rem;cursor:pointer}
-@media (max-width:960px){
-#burger{display:block}
-.nav{position:fixed;top:calc(60px + env(safe-area-inset-top,0px));left:0;right:0;flex-direction:column;gap:0;background:rgba(10,16,11,.98);max-height:0;overflow:hidden;transition:max-height .45s ease}
-.nav.open{max-height:85vh;border-bottom:2px solid var(--g1)}
-.nav a{padding:.9rem 1.25rem;border-top:1px solid var(--bd);font-size:1.25rem}
-}
+@media (max-width:960px){.nav{display:none}}
 /* escena */
 .scene{width:100%;height:auto;display:block;border-radius:6px 34px 6px 34px;border:1px solid var(--bd);background:linear-gradient(#1c2f1f,#0e160f);margin-bottom:2.5rem}
 .sm{animation:smoke 6s ease-out infinite;transform-box:fill-box;transform-origin:center}
@@ -385,7 +379,7 @@ section.sheet{padding:0}
 <nav class="nav" id="nav" aria-label="Principal">
 <a href="#" data-open="0">Cifras</a><a href="#" data-open="1">Causas</a><a href="#" data-open="2">Efectos</a><a href="#" data-open="3">Degradación</a><a href="#" data-open="4">Qué hacer</a><a href="#" data-open="5">Videos</a><a href="#" data-open="6">Compromiso</a><a href="#" data-open="7">Minijuego</a>
 </nav>
-<button id="burger" aria-label="Abrir menú" aria-expanded="false">&#9776;</button>
+
 </div></header>
 <main class="hero" id="inicio">
 <div class="bg" aria-hidden="true"><div class="bgs"></div>
@@ -697,13 +691,13 @@ $$('.grid,.stats,.bins').forEach(function(g){Array.prototype.forEach.call(g.chil
 $$('.tab').forEach(function(t,i){t.onclick=function(){setTab(i)}});
 
 /* ---------- navegación: carrusel > ruleta > sección ---------- */
-var wheelEl=$('#wheel'),owEl=$('#ow'),wk=$('#wk'),wart=$('#wart'),curSec=-1,openSh=-1,navEl=$('#nav'),bg=$('#burger');
+var wheelEl=$('#wheel'),owEl=$('#ow'),wk=$('#wk'),wart=$('#wart'),curSec=-1,openSh=-1;
 var W=Wheel(owEl,function(i){openSheet(curSec,i)});
 var capt=$('#capt');
 function caption(i){var S=SECS[i];capt.textContent=S.title;capt.style.animation='none';void capt.offsetWidth;capt.style.animation=''}
 var cc=Carousel($('#cc'),SECS.map(function(s){return{img:s.art,title:s.name}}),function(i){openWheel(i)},caption);
 setTimeout(cc.start,2700);
-function openWheel(si){curSec=si;var S=SECS[si];wk.textContent=S.kick;wart.style.backgroundImage='url("'+S.art+'")';W.set(S.items,0);wheelEl.classList.add('open');wheelEl.setAttribute('aria-hidden','false');cc.pause();navEl.classList.remove('open');bg.innerHTML='&#9776;'}
+function openWheel(si){curSec=si;var S=SECS[si];wk.textContent=S.kick;wart.style.backgroundImage='url("'+S.art+'")';W.set(S.items,0);wheelEl.classList.add('open');wheelEl.setAttribute('aria-hidden','false');cc.pause()}
 function closeWheel(){closeSheet();wheelEl.classList.remove('open');wheelEl.setAttribute('aria-hidden','true');cc.resume()}
 function openSheet(si,item){var S=SECS[si],sh=$('#v-'+S.id);closeSheet();reset(sh);sh.scrollTop=0;sh.classList.add('open');sh.setAttribute('aria-hidden','false');openSh=si;setTimeout(function(){S.go(sh,item)},800)}
 function closeSheet(){if(openSh<0)return;var sh=$('#v-'+SECS[openSh].id);sh.classList.remove('open');sh.setAttribute('aria-hidden','true');openSh=-1}
@@ -711,7 +705,6 @@ $('#wx').onclick=closeWheel;
 $$('[data-back]').forEach(function(b){b.onclick=closeSheet});
 $$('[data-open]').forEach(function(a){a.onclick=function(e){e.preventDefault();closeSheet();openWheel(+a.dataset.open)}});
 $('#home').onclick=function(e){e.preventDefault();closeWheel()};
-bg.onclick=function(){var o=navEl.classList.toggle('open');bg.setAttribute('aria-expanded',o);bg.innerHTML=o?'&#10005;':'&#9776;'};
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(openSh>=0)closeSheet();else if(wheelEl.classList.contains('open'))closeWheel()}});
 
 /* ---------- compromiso ---------- */
