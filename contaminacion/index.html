@@ -456,12 +456,14 @@ section.sheet{padding:0}
 .story-pov-world{transition:transform .45s ease}
 .story-target{position:absolute;z-index:6;left:52%;bottom:32%;width:54px;height:52px;display:grid;place-items:center;transform:translateX(-50%);transform-origin:center bottom;filter:drop-shadow(0 5px 3px rgba(0,0,0,.18))}
 .story-target-shadow{position:absolute;left:4px;right:4px;bottom:0;height:9px;border-radius:50%;background:rgba(28,37,24,.28);filter:blur(2px)}
-.story-object{position:relative;left:auto;bottom:auto;display:block;font-size:clamp(1.9rem,4.5vw,2.8rem);line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18));animation:storyItemIdle 2.8s ease-in-out infinite}
+.story-object{position:relative;left:auto;bottom:auto;display:block;font-size:clamp(1.15rem,2.6vw,1.7rem);line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18));animation:storyItemIdle 2.8s ease-in-out infinite}
 .story-pov-bin{position:absolute;z-index:4;left:13%;bottom:25%;width:44px;height:54px;display:grid;place-items:center;border:3px solid #e0eee2;border-top:6px solid #e0eee2;border-radius:5px 5px 9px 9px;background:linear-gradient(90deg,#24764b,#3a9a61);color:#fff;font-size:1.5rem;box-shadow:0 5px 0 rgba(27,62,41,.26);transform:perspective(100px) rotateY(8deg)}
 .story-pov-bin:before{content:"";position:absolute;top:-9px;left:-5px;right:-5px;height:7px;border-radius:3px;background:#d7e8d9;border:1px solid #8eaa92}
 .story-action-caption{position:absolute;z-index:9;left:50%;top:12px;transform:translateX(-50%);max-width:75%;padding:5px 12px;border:1px solid rgba(255,255,255,.48);border-radius:999px;background:rgba(13,28,18,.76);color:#fff;font:900 .78rem var(--fh);letter-spacing:.1em;text-align:center;white-space:nowrap;opacity:0;pointer-events:none}
 .story-scene[data-action]:not([data-action="idle"]) .story-action-caption{animation:storyCaptionIn .35s ease-out forwards}
 .story-scene[data-action="approach"] .story-pov-world{animation:storyCameraStep .9s ease-in-out both}
+.story-scene[data-action="pickup"] .story-pov-world,.story-scene[data-action="dispose"] .story-pov-world,.story-scene[data-action="keep"] .story-pov-world{animation:storyCameraStep 1.25s ease-in-out both}
+.story-scene[data-action="place"] .story-pov-arm.right{animation:storyHandReach 1.1s ease-in-out both}
 .story-scene[data-action="pickup"] .story-pov-arm.right,.story-scene[data-action="dispose"] .story-pov-arm.right,.story-scene[data-action="keep"] .story-pov-arm.right{animation:storyHandReach 1.25s cubic-bezier(.2,.7,.2,1) both}
 .story-scene[data-action="pickup"] .story-target{animation:storyItemPickup 1.25s ease-in-out both}
 .story-scene[data-action="dispose"] .story-target{animation:storyItemToBin 1.25s ease-in-out both}
@@ -484,7 +486,7 @@ section.sheet{padding:0}
 @keyframes storyHandReach{0%,100%{transform:rotate(-31deg) translate(0,0)}42%{transform:rotate(-4deg) translate(-8%,-24%)}72%{transform:rotate(-14deg) translate(-4%,-17%)}}
 @keyframes storyHandSupport{0%,100%{transform:rotate(31deg)}42%{transform:rotate(13deg) translate(7%,-17%)}}
 @keyframes storyItemPickup{0%{transform:translateX(-50%) scale(1)}35%{transform:translateX(-50%) translateY(-24px) scale(1.12)}68%{transform:translateX(8px) translateY(42px) scale(1.65)}100%{transform:translateX(28px) translateY(92px) scale(.35);opacity:0}}
-@keyframes storyItemToBin{0%{transform:translateX(-50%) scale(1)}28%{transform:translateX(-50%) translateY(-20px) scale(1.12)}68%{transform:translateX(-145%) translateY(24px) scale(.78) rotate(-20deg)}100%{transform:translateX(-145%) translateY(35px) scale(.25) rotate(-45deg);opacity:.12}}
+@keyframes storyItemToBin{0%{left:52%;transform:translateX(-50%) scale(1)}28%{left:45%;transform:translateX(-50%) translateY(-20px) scale(1.15)}72%{left:18%;transform:translateX(-50%) translateY(18px) scale(.78) rotate(-20deg)}100%{left:15%;transform:translateX(-50%) translateY(25px) scale(.25) rotate(-45deg);opacity:.12}}
 @keyframes storyItemKeep{0%{transform:translateX(-50%) scale(1)}42%{transform:translateX(-50%) translateY(-32px) scale(1.25)}100%{transform:translateX(70px) translateY(80px) scale(.4);opacity:0}}
 @keyframes storyItemPlace{0%,100%{transform:translateX(-50%) scale(1)}45%{transform:translateX(-50%) translateY(20px) scale(.95)}75%{transform:translateX(-50%) translateY(28px) scale(.85)}}
 @keyframes storyItemPush{0%{transform:translateX(-50%) scale(1)}45%{transform:translateX(-50%) translateY(-15px) scale(.95)}100%{transform:translateX(80px) translateY(-10px) scale(.7);opacity:.8}}
@@ -1392,16 +1394,22 @@ function finishStory(won){
 }
 function storyActionFromText(label){
  var t=String(label||'').toLocaleLowerCase('es');
- if(/(cierras|apagas|desconectas|abres|abres|enciendes|giras|ajustas)/.test(t))return 'operate';
+ if(/(cierras|apagas|desconectas|abres|enciendes|giras|ajustas)/.test(t))return 'operate';
  if(/(avisas|reportas|informas|comunicas|recuerdas|explicas)/.test(t))return 'notify';
  if(/(guardas|conservas|llevas contigo|mantienes contigo|te la quedas)/.test(t))return 'keep';
  if(/(empujas|pateas|arrojas|lanzas)/.test(t))return 'push';
- if(/(dejas|abandonas|esperas|no haces|no la recoges)/.test(t))return 'leave';
- if(/(recoges|levantas|juntas|retiras|agarras|tomas|detienes)/.test(t)){
-  if(/(recipiente|tacho|papelera|contenedor|separas|depositas)/.test(t))return 'dispose';
-  return 'pickup';
+ if(/(dejas|abandonas|esperas|no haces|no la recoges)/.test(t)){
+  if(/(recipiente|tacho|papelera|contenedor)/.test(t))return 'dispose';
+  return 'leave';
  }
- if(/(depositas|colocas|pones|separas|clasificas|reciclas)/.test(t))return 'dispose';
+ if(/(llevas|depositas|separas|clasificas|reciclas)/.test(t)&&/(recipiente|tacho|papelera|contenedor|reciclaje)/.test(t))return 'dispose';
+ if(/(recoges|levantas|juntas|retiras|agarras|tomas|detienes)/.test(t))return 'pickup';
+ if(/(colocas|pones|apoyas)/.test(t)){
+  if(/(recipiente|tacho|papelera|contenedor)/.test(t))return 'dispose';
+  return 'place';
+ }
+ if(/(depositas|separas|clasificas|reciclas)/.test(t))return 'dispose';
+ if(/(te acercas|vas hacia)/.test(t))return 'approach';
  return 'reach';
 }
 var storyActionNames={approach:'TE ACERCAS',pickup:'RECOGES EL OBJETO',dispose:'LO LLEVAS AL RECIPIENTE',keep:'LO GUARDAS',place:'LO COLOCAS',push:'LO EMPUJAS',leave:'LO DEJAS AHÍ',operate:'REALIZAS LA ACCIÓN',notify:'AVISAS',reach:'TE ACERCAS AL OBJETO'};
@@ -1411,7 +1419,7 @@ function answerStory(index){
  Array.prototype.forEach.call(storyOptions.children,function(button,i){button.disabled=true;if(i===storyCurrent.correct)button.classList.add('correct-choice');else if(i===index)button.classList.add('wrong-choice')});
  storyScene.classList.remove('action-good','action-bad');storyScene.dataset.action=chosenAction;storyActionCaption.textContent=storyActionNames[chosenAction]||'ACCIÓN';void storyScene.offsetWidth;storyScene.dataset.action=chosenAction;playStorySound(good);updateStoryScore();
  storyFeedback.textContent=good?'¡Correcto! +10 puntos. '+storyCurrent.good:'Esa decisión perjudica el entorno. −12.5 puntos. '+storyCurrent.bad;
- if(storyScore>=100||storyScore<=0)window.setTimeout(function(){finishStory(storyScore>=100)},1150);else $('#story-continue').hidden=false;
+ if(storyScore>=100||storyScore<=0)window.setTimeout(function(){finishStory(storyScore>=100)},1500);else window.setTimeout(function(){if(storyLocked&&!storyPlay.hidden)$('#story-continue').hidden=false;},1350);
 }
 $('#story-continue').addEventListener('click',showStoryScenario);
 $('#story-start').addEventListener('click',function(){if(!storyGender||!storyPlace)return;storyScore=50;storyDecision=0;storyDeck=[];storySetup.hidden=true;storyEnd.hidden=true;storyPlay.hidden=false;updateStoryScore();storyScene.classList.remove('action-good','action-bad');showStoryScenario();});
