@@ -1232,6 +1232,7 @@ wallForm.addEventListener('submit',async function(e){
  }finally{wallPublish.disabled=false;}
 });
 $('#wall-cancel').addEventListener('click',function(){wallEditor.hidden=true;wallSelectedSlot=0;wallInput.value='';});
+drawWall([]);
 loadWall();
 window.setInterval(function(){if(!document.hidden)loadWall()},20000);
 
