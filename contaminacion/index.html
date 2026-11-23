@@ -428,7 +428,6 @@ section.sheet{padding:0}
 .story-scene[data-place="parque"] .story-pov-feature{display:none}
 .story-scene[data-place="parque"] .story-pov-side{background:linear-gradient(90deg,transparent,#4d954d);opacity:.8}
 .story-scene[data-place="parque"] .story-pov-floor{height:37%;background:linear-gradient(#84b75b,#638d43)}
-.story-scene[data-place="parque"] .story-pov-prop{content:"🌳"}
 .story-scene[data-place="bano"] .story-pov-backdrop{background:repeating-linear-gradient(0deg,transparent 0 48px,rgba(117,151,151,.22) 49px 51px),repeating-linear-gradient(90deg,#d5e5df 0 48px,#a9c6bf 49px 51px)}
 .story-scene[data-place="bano"] .story-pov-backdrop:before{top:9%;left:37%;width:26%;height:35%;border:8px solid #789c99;border-radius:5px;background:linear-gradient(145deg,#b7dce0,#eef6ee);box-shadow:0 78px 0 -12px #f3f5ef}
 .story-scene[data-place="bano"] .story-pov-feature{top:53%;left:35%;width:30%;height:19%;border:5px solid #819b97;border-radius:8px 8px 18px 18px;background:linear-gradient(#fff,#b9d4ce)}
@@ -475,7 +474,7 @@ section.sheet{padding:0}
 .story-end h3{margin:.3rem 0 .7rem;font:900 clamp(2rem,7vw,3rem) var(--fh);color:var(--g1)}
 .story-end p{margin:0 auto 1rem;color:var(--mut)}
 .qtime{color:#ffd58a;font:900 1rem var(--fh);white-space:nowrap;letter-spacing:.05em}
-@media(max-width:640px){.wall-board-frame{width:100%;min-width:0;box-sizing:border-box;border-width:8px;padding:.45rem}.wall-ticket-grid{width:100%;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}.wall-ticket{width:100%;min-width:0;min-height:76px;box-sizing:border-box;aspect-ratio:auto;padding:.35rem;overflow:hidden}.wall-ticket-word,.wall-ticket.is-filled .wall-ticket-word{display:block;width:100%;min-width:0;max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;word-break:normal;hyphens:auto;font-size:clamp(.78rem,3.8vw,1rem);line-height:1.12;letter-spacing:-.02em}.story-scene{min-height:260px;aspect-ratio:4/3}.story-pov-arm{width:31%;height:58%;bottom:-31%}.story-pov-object{bottom:29%}.story-options{grid-template-columns:1fr}}
+@media(max-width:640px){.wall-board-frame{width:100%;min-width:0;box-sizing:border-box;border-width:8px;padding:.45rem}.wall-ticket-grid{width:100%;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}.wall-ticket{width:100%;min-width:0;min-height:76px;box-sizing:border-box;aspect-ratio:auto;padding:.35rem;overflow:hidden}.wall-ticket-word,.wall-ticket.is-filled .wall-ticket-word{display:block;width:100%;min-width:0;max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;word-break:normal;hyphens:auto;font-size:clamp(.78rem,3.8vw,1rem);line-height:1.12;letter-spacing:-.02em}.story-scene{min-height:260px;aspect-ratio:4/3}.story-pov-arm{width:31%;height:58%;bottom:-31%}.story-object{bottom:26%}.story-options{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.story-scene *,.story-scene,.wall-ticket{animation:none!important;transition:none!important}}
 
 </style>
@@ -1298,8 +1297,9 @@ var STORY_BANK={
  ]
 };
 var storyGender='',storyPlace='',storyScore=50,storyDeck=[],storyCurrent=null,storyLocked=false,storyDecision=0;
-var storySetup=$('#story-setup'),storyPlay=$('#story-play'),storyEnd=$('#story-end'),storyScene=$('#story-scene'),storyPovSign=$('#story-pov-sign'),storyObject=$('#story-object'),storyOptions=$('#story-options'),storyPrompt=$('#story-prompt'),storyFeedback=$('#story-feedback'),storyMeterFill=$('#story-meter-fill'),storyPercent=$('#story-percent'),storyMeter=$('#story-meter'),storySoundToggle=$('#story-sound-toggle');
+var storySetup=$('#story-setup'),storyPlay=$('#story-play'),storyEnd=$('#story-end'),storyScene=$('#story-scene'),storyPovSign=$('#story-pov-sign'),storyPovProp=$('#story-pov-prop'),storyObject=$('#story-object'),storyOptions=$('#story-options'),storyPrompt=$('#story-prompt'),storyFeedback=$('#story-feedback'),storyMeterFill=$('#story-meter-fill'),storyPercent=$('#story-percent'),storyMeter=$('#story-meter'),storySoundToggle=$('#story-sound-toggle');
 var storyPlaceNames={colegio:'COLEGIO',casa:'CASA',parque:'PARQUE',bano:'BAÑO',publico:'ESPACIO PÚBLICO'};
+var storyPlaceProps={colegio:'🪟',casa:'🛋️',parque:'🌳',bano:'🪞',publico:'🏙️'};
 var storySoundOn=true,storyAudioContext=null;
 function playStorySound(isGood){
  if(!storySoundOn)return;
@@ -1327,14 +1327,14 @@ storySetup.addEventListener('click',function(event){
   storyPlace=button.dataset.storyPlace;
   Array.prototype.forEach.call(storySetup.querySelectorAll('[data-story-place]'),function(x){x.classList.toggle('selected',x===button)});
   $('#story-place-label').textContent=button.textContent;
-  storyPovSign.textContent=storyPlaceNames[storyPlace]||'ESCENARIO';
+  storyPovSign.textContent=storyPlaceNames[storyPlace]||'ESCENARIO';storyPovProp.textContent=storyPlaceProps[storyPlace]||'•';
   $('#story-setup-hint').textContent=storyGender?'Ya puedes comenzar tu historia.':'Ahora elige tu personaje.';
  }
  $('#story-start').disabled=!(storyGender&&storyPlace);
 });
 function nextStoryScenario(){if(!storyDeck.length)storyDeck=shuffleStory(STORY_BANK[storyPlace]);return storyDeck.pop();}
 function showStoryScenario(){
- storyLocked=false;storyCurrent=nextStoryScenario();storyDecision++;storyScene.dataset.place=storyPlace;storyPovSign.textContent=storyPlaceNames[storyPlace]||'ESCENARIO';storyObject.textContent=storyCurrent.item;
+ storyLocked=false;storyCurrent=nextStoryScenario();storyDecision++;storyScene.dataset.place=storyPlace;storyPovSign.textContent=storyPlaceNames[storyPlace]||'ESCENARIO';storyPovProp.textContent=storyPlaceProps[storyPlace]||'•';storyObject.textContent=storyCurrent.item;
  storyScene.classList.remove('action-good','action-bad');void storyScene.offsetWidth;
  $('#story-turn').textContent='Decisión '+storyDecision;storyPrompt.textContent=storyCurrent.q;storyFeedback.textContent='Elige una de las tres opciones.';storyOptions.replaceChildren();
  storyCurrent.a.forEach(function(label,index){var button=document.createElement('button');button.type='button';button.className='story-option';button.textContent=(['A. ','B. ','C. '][index])+label;button.addEventListener('click',function(){answerStory(index)});storyOptions.appendChild(button);});
