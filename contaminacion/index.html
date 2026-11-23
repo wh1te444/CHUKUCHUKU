@@ -524,84 +524,30 @@ section.sheet{padding:0}
 @media(max-width:640px){.wall-board-frame{width:100%;min-width:0;box-sizing:border-box;border-width:8px;padding:.45rem}.wall-ticket-grid{width:100%;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}.wall-ticket{width:100%;min-width:0;min-height:76px;box-sizing:border-box;aspect-ratio:auto;padding:.35rem;overflow:hidden}.wall-ticket-word,.wall-ticket.is-filled .wall-ticket-word{display:block;width:100%;min-width:0;max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;word-break:normal;hyphens:auto;font-size:clamp(.78rem,3.8vw,1rem);line-height:1.12;letter-spacing:-.02em}.story-scene{min-height:260px;aspect-ratio:4/3}.story-pov-arm{width:31%;height:58%;bottom:-31%}.story-object{bottom:26%}.story-options{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.story-scene *,.story-scene,.wall-ticket{animation:none!important;transition:none!important}}
 
-/* ===== MINIJUEGOS ECOLÓGICOS: RESTAURAR Y LABERINTO ===== */
-#eco-games{display:grid;gap:1.2rem}
-.eco-mini-game{min-width:0;padding:clamp(1rem,3vw,1.35rem);border:1px solid var(--bd);border-radius:8px 24px 8px 24px;background:linear-gradient(150deg,#17251a,#101810)}
-.eco-mini-head{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:1rem}
-.eco-mini-head h3{margin:0 0 .25rem;font-size:clamp(1.45rem,4vw,2rem);color:var(--sand)}
-.eco-mini-head p{margin:0;color:var(--mut);font-size:.95rem}
-.eco-mini-number{flex:none;width:42px;height:42px;display:grid;place-items:center;border:2px solid var(--g1);border-radius:50%;color:var(--g1);font:900 1.2rem var(--fh)}
-.restore-scene{position:relative;isolation:isolate;overflow:hidden;width:100%;aspect-ratio:16/7;min-height:210px;max-height:360px;border:2px solid rgba(210,220,180,.35);border-radius:12px 26px 8px 8px;background:#a8b7a3;transition:filter .5s}
-.restore-sky{position:absolute;inset:0 0 37%;background:linear-gradient(#9ba99e,#c5bda5);transition:background .8s}
-.restore-sun{position:absolute;z-index:1;top:10%;right:12%;width:40px;height:40px;border-radius:50%;background:#d5c99d;box-shadow:0 0 22px rgba(213,201,157,.35);transition:all .8s}
-.restore-hill{position:absolute;z-index:1;bottom:30%;width:70%;height:42%;border-radius:50% 50% 0 0;background:#64715c;opacity:.9;transition:background .8s}
-.restore-hill.back{left:-14%;transform:scale(1.15);background:#687467}
-.restore-hill.front{right:-19%;bottom:26%;background:#596c53}
-.restore-water{position:absolute;z-index:2;left:-4%;right:-4%;bottom:-4%;height:37%;background:repeating-linear-gradient(175deg,rgba(67,60,44,.18) 0 5px,transparent 5px 17px),linear-gradient(#777a66,#565f50);clip-path:polygon(0 13%,17% 0,33% 15%,53% 4%,73% 18%,100% 2%,100% 100%,0 100%);transition:background 1s,filter 1s}
-.restore-path{position:absolute;z-index:3;left:0;right:0;bottom:24%;height:19%;background:#8d8065;clip-path:polygon(0 60%,27% 0,70% 18%,100% 65%,100% 100%,0 100%);transition:filter .8s}
-.restore-tree{position:absolute;z-index:4;left:14%;bottom:23%;width:90px;height:145px;transition:transform .7s}
-.restore-trunk{position:absolute;bottom:0;left:42px;width:16px;height:80px;border-radius:8px;background:#75523a}
-.restore-crown{position:absolute;left:9px;top:0;width:78px;height:78px;border-radius:50%;background:#777b63;box-shadow:22px 24px 0 -9px #6c725c,-15px 28px 0 -8px #81846c;transition:background .8s,box-shadow .8s,transform .8s}
-.restore-litter{position:absolute;z-index:6;bottom:25%;font-size:clamp(1.25rem,3vw,2rem);filter:grayscale(.45);transition:opacity .5s,transform .6s}
-.litter-a{left:48%}.litter-b{left:65%;bottom:22%}.litter-c{left:79%;bottom:26%}.litter-d{left:35%;bottom:19%}
-.restore-bins{position:absolute;z-index:6;right:13%;bottom:26%;display:flex;gap:9px;opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
-.restore-bins span{width:30px;height:39px;display:grid;place-items:center;border:2px solid #e1efe1;border-radius:4px 4px 8px 8px;background:#348b5b;color:white;font-size:1rem;box-shadow:0 4px 0 rgba(25,55,35,.2)}
-.restore-bins span+span{background:#c18a47}
-.restore-flowers,.restore-fish{position:absolute;z-index:6;bottom:22%;left:28%;font-size:clamp(1rem,2.4vw,1.5rem);opacity:0;transform:translateY(8px);transition:opacity .7s,transform .7s}
-.restore-fish{bottom:6%;left:48%;font-size:1.25rem}
-.restore-scene-label{position:absolute;z-index:8;top:10px;left:10px;padding:5px 10px;border-radius:999px;background:rgba(20,27,18,.7);color:#fff;font:900 .72rem var(--fh);letter-spacing:.1em}
-.restore-progress-line{display:flex;justify-content:space-between;gap:.8rem;margin:.85rem 0 .4rem;color:var(--sand);font:900 .95rem var(--fh)}
-.restore-progress{height:12px;overflow:hidden;border-radius:999px;background:#29362a}
-.restore-progress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#c69a55,#8fd16f);transition:width .5s}
-.restore-tasks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;margin-top:1rem}
-.restore-task{min-width:0;display:flex;align-items:center;gap:.65rem;padding:.7rem;background:#1b2a1e;border:1px solid var(--bd);border-radius:8px 16px 8px 16px;color:var(--ink);text-align:left;cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
-.restore-task:hover:not(:disabled){border-color:var(--g1);transform:translateY(-2px)}
-.restore-task:disabled{opacity:.72;cursor:default}
-.restore-task.done{border-color:#6cae68;background:#203c27}
-.restore-task-icon{flex:none;font-size:1.35rem}
-.restore-task b,.restore-task small{display:block}
-.restore-task b{font:900 .98rem var(--fh);letter-spacing:.02em}
-.restore-task small{margin-top:2px;color:var(--mut);font:400 .82rem/1.25 var(--fb)}
-.restore-task-check{margin-left:auto;color:var(--g1);font-size:1.15rem}
-.restore-footer,.maze-footer{display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin-top:.85rem}
-.restore-footer p,.maze-footer p{margin:0;color:var(--mut);font-size:.9rem}
-.restore-scene[data-stage="polluted"] .restore-tree{filter:grayscale(.55)}
-.restore-scene[data-stage="polluted"] .restore-water{filter:saturate(.45)}
-.restore-scene.debris-cleared .restore-litter{opacity:0;transform:translateY(18px) scale(.3)}
-.restore-scene.bins-added .restore-bins{opacity:1;transform:translateY(0)}
-.restore-scene.tree-grown .restore-crown{background:#39874c;box-shadow:22px 24px 0 -9px #53a75a,-15px 28px 0 -8px #70b968;transform:scale(1.08)}
-.restore-scene.tree-grown .restore-tree{transform:scale(1.08)}
-.restore-scene.water-clean .restore-water{background:repeating-linear-gradient(175deg,rgba(255,255,255,.18) 0 3px,transparent 3px 16px),linear-gradient(#4aa5bd,#26758f);filter:saturate(1.2)}
-.restore-scene.water-clean .restore-fish,.restore-scene.tree-grown .restore-flowers{opacity:1;transform:translateY(0)}
-.restore-scene.all-clean .restore-sky{background:linear-gradient(#74c7e6,#c7e8e8)}
-.restore-scene.all-clean .restore-sun{background:#ffe49b;box-shadow:0 0 28px rgba(255,228,155,.65)}
-.restore-scene.all-clean .restore-hill.back{background:#75b86a}
-.restore-scene.all-clean .restore-hill.front{background:#4e9856}
-.maze-hud{display:flex;justify-content:space-between;gap:.8rem;margin-bottom:.65rem;color:var(--sand);font:900 1rem var(--fh)}
-.maze-grid{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:3px;width:min(100%,540px);margin:0 auto;padding:8px;border:3px solid #8e6842;border-radius:10px;background:#765438;box-shadow:inset 0 0 0 3px #b88a59,0 8px 0 #51391f}
-.maze-cell{position:relative;min-width:0;aspect-ratio:1;display:grid;place-items:center;overflow:hidden;border-radius:3px;font-size:clamp(.85rem,2.6vw,1.35rem)}
-.maze-cell.path{background:linear-gradient(145deg,#a8bb6f,#839b55)}
-.maze-cell.path:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 25%,rgba(255,255,255,.13),transparent 46%);pointer-events:none}
-.maze-cell.wall{background:linear-gradient(145deg,#326c3c,#214d2e);box-shadow:inset 0 0 0 2px rgba(12,46,24,.25)}
-.maze-cell.wall:before{content:"";width:72%;height:70%;border-radius:48% 48% 30% 30%;background:radial-gradient(circle at 35% 25%,#75ad5c 0 12%,transparent 14%),radial-gradient(circle at 70% 42%,#4b914d 0 35%,transparent 37%),#397d42;box-shadow:0 3px 0 rgba(15,48,25,.25)}
-.maze-cell.player{font-size:clamp(1.05rem,3.2vw,1.6rem);z-index:2}
-.maze-cell.exit{background:#d2bc73;box-shadow:inset 0 0 0 2px #8c703d}
-.maze-cell.item{font-size:clamp(.95rem,2.7vw,1.4rem)}
-.maze-controls{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,42px);justify-content:center;gap:6px;margin:1rem auto .3rem}
-.maze-controls button{border:1px solid #66845e;border-radius:8px;background:#24452b;color:#e9f4e7;font:900 1.3rem var(--fh);cursor:pointer;touch-action:manipulation}
-.maze-controls button:active{transform:scale(.94);background:#3c7543}
-.maze-control-spacer{display:block}
-.maze-footer{align-items:flex-start}
-@media(max-width:640px){
- .restore-scene{aspect-ratio:4/3;min-height:235px}
- .restore-tree{left:5%;transform:scale(.82);transform-origin:bottom left}
- .restore-tasks{grid-template-columns:1fr}
- .restore-task{padding:.65rem}
- .restore-footer,.maze-footer{flex-direction:column;align-items:stretch}
- .maze-grid{gap:2px;padding:5px}
- .maze-controls{grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,46px)}
-}
-@media(prefers-reduced-motion:reduce){.restore-scene *,.restore-progress i,.restore-task,.maze-controls button{transition:none!important;animation:none!important}}
+/* ===== MINIJUEGOS ECOLÓGICOS MEJORADOS Y LIGEROS ===== */
+#eco-games{display:grid;gap:1rem}.eco-mini-game{min-width:0;padding:1rem;border:1px solid var(--bd);border-radius:10px;background:#121c13}
+.eco-mini-head{display:flex;gap:.7rem;align-items:flex-start;margin-bottom:.8rem}.eco-mini-head h3{margin:0 0 .2rem;font-size:1.55rem;color:var(--sand)}.eco-mini-head p{margin:0;color:var(--mut);font-size:.9rem}
+.eco-mini-number{flex:none;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--g1);border-radius:50%;color:var(--g1);font:900 1rem var(--fh)}
+.restore-scene{position:relative;overflow:hidden;width:100%;height:220px;border:1px solid #68795f;border-radius:8px;background:#a8bfac}
+.restore-sky{position:absolute;inset:0 0 38%;background:#a8c9d4}.restore-sun{position:absolute;top:12%;right:12%;width:28px;height:28px;border-radius:50%;background:#e8d69b}
+.restore-hill{position:absolute;bottom:30%;width:65%;height:36%;border-radius:50% 50% 0 0;background:#747d66}.restore-hill.back{left:-12%}.restore-hill.front{right:-14%;background:#626f59}
+.restore-water{position:absolute;left:0;right:0;bottom:0;height:34%;background:#737e75}.restore-path{position:absolute;left:0;right:0;bottom:25%;height:17%;background:#99886b}
+.restore-tree{position:absolute;left:13%;bottom:22%;width:68px;height:118px}.restore-trunk{position:absolute;bottom:0;left:31px;width:10px;height:63px;background:#76523a}.restore-crown{position:absolute;top:0;left:5px;width:60px;height:60px;border-radius:50%;background:#777c69}
+.restore-litter{position:absolute;bottom:24%;font-size:1.2rem;transition:opacity .2s}.litter-a{left:46%}.litter-b{left:62%;bottom:20%}.litter-c{left:78%}.litter-d{left:33%;bottom:18%}
+.restore-bins{position:absolute;right:12%;bottom:25%;display:flex;gap:5px;opacity:0}.restore-bins span{width:25px;height:32px;display:grid;place-items:center;background:#328454;border:1px solid #dce9dc;border-radius:4px;font-size:.85rem}.restore-bins span+span{background:#b88745}
+.restore-flowers,.restore-fish{position:absolute;bottom:22%;left:25%;font-size:1rem;opacity:0}.restore-fish{bottom:5%;left:48%}
+.restore-scene-label{position:absolute;top:8px;left:8px;padding:3px 8px;border-radius:4px;background:#26362a;color:#fff;font:900 .68rem var(--fh)}
+.restore-progress-line{display:flex;justify-content:space-between;gap:.5rem;margin:.7rem 0 .35rem;color:var(--sand);font:900 .9rem var(--fh)}.restore-progress{height:8px;overflow:hidden;border-radius:6px;background:#29362a}.restore-progress i{display:block;width:0;height:100%;background:#8fd16f;transition:width .2s}.restore-score{margin:.45rem 0 0;color:var(--sand);font-size:.85rem;font-weight:700}
+.restore-tasks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-top:.8rem}.restore-task{min-width:0;display:flex;align-items:center;gap:.5rem;padding:.6rem;background:#1b2a1e;border:1px solid var(--bd);border-radius:7px;color:var(--ink);text-align:left;cursor:pointer}.restore-task:disabled{opacity:.78;cursor:default}.restore-task b,.restore-task small{display:block}.restore-task b{font:900 .88rem var(--fh)}.restore-task small{margin-top:2px;color:var(--mut);font:.77rem/1.2 var(--fb)}.restore-task-icon{flex:none;font-size:1.1rem}.restore-task-check{margin-left:auto;color:var(--mut);font-weight:900}
+.restore-task.good{border-color:#65a86b;background:#203c27}.restore-task.good .restore-task-check{color:#85d58d}.restore-task.bad{border-color:#bd8054;background:#3b2820}.restore-task.bad .restore-task-check{color:#e5a06e}
+.restore-footer,.maze-footer{display:flex;align-items:center;justify-content:space-between;gap:.7rem;margin-top:.7rem}.restore-footer p,.maze-footer p{margin:0;color:var(--mut);font-size:.85rem}
+.restore-scene.debris-cleared .restore-litter{opacity:0}.restore-scene.bins-added .restore-bins{opacity:1}.restore-scene.tree-grown .restore-crown{background:#39874c}.restore-scene.water-clean .restore-water{background:#398da5}.restore-scene.water-clean .restore-fish,.restore-scene.tree-grown .restore-flowers{opacity:1}.restore-scene.all-clean .restore-sky{background:#87c9df}.restore-scene.all-clean .restore-hill{background:#62a45e}
+.maze-hud{display:flex;justify-content:space-between;gap:.6rem;margin-bottom:.6rem;color:var(--sand);font:900 .95rem var(--fh)}.maze-grid{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:2px;width:min(100%,470px);margin:auto;padding:6px;border:2px solid #805c3a;border-radius:8px;background:#805c3a}
+.maze-cell{position:relative;min-width:0;aspect-ratio:1;display:grid;place-items:center;overflow:hidden;border-radius:2px;background:#9bb96b;font-size:clamp(.65rem,1.8vw,1rem)}.maze-cell.path{background:#9bb96b}.maze-cell.wall{background:#32643a}.maze-cell.wall:after{content:"";width:65%;height:65%;border-radius:50% 50% 38% 38%;background:#4b8748;box-shadow:inset 0 2px 0 #75a65b}.maze-cell.player,.maze-cell.exit{background:#e3d48c}.maze-cell.player{font-size:clamp(.75rem,2vw,1.1rem)}
+.maze-legend{display:flex;justify-content:center;gap:1rem;margin:.45rem 0;color:var(--mut);font-size:.76rem}.maze-legend span{display:flex;align-items:center;gap:.3rem}.maze-legend i{display:inline-block;width:11px;height:11px;border-radius:50%}.legend-player{background:#e3d48c;border:1px solid #9a8750}.legend-tree{background:#4b8748}
+.maze-controls{display:grid;grid-template-columns:repeat(3,46px);grid-template-rows:repeat(2,40px);justify-content:center;gap:5px;margin:.8rem auto .2rem}.maze-controls button{border:1px solid #66845e;border-radius:7px;background:#24452b;color:#e9f4e7;font:900 1.2rem var(--fh);cursor:pointer;touch-action:manipulation}.maze-controls button:active{background:#3c7543}.maze-control-spacer{display:block}.maze-footer{align-items:flex-start}
+@media(max-width:640px){.restore-scene{height:195px}.restore-tasks{grid-template-columns:1fr}.restore-footer,.maze-footer{flex-direction:column;align-items:stretch}.maze-grid{width:min(100%,390px);gap:1px;padding:4px}.maze-controls{grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,44px)}}
+@media(prefers-reduced-motion:reduce){.restore-progress i,.restore-litter{transition:none!important}}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -871,41 +817,31 @@ section.sheet{padding:0}
 
 
 <section class="game-feature eco-extra-games" id="eco-games" aria-label="Juegos ecológicos">
-  <div class="game-feature-head">
-    <span class="kick">Dos nuevos retos · Juegos 2D</span>
-    <h3>Recupera y explora</h3>
-    <p>Completa los retos, encuentra los residuos y devuelve la vida a los espacios naturales.</p>
-  </div>
-  <article class="eco-mini-game" id="restore-game" aria-labelledby="restore-title">
-    <div class="eco-mini-head"><span class="eco-mini-number">01</span><div><h3 id="restore-title">Recupera el entorno</h3><p>Transforma un lugar contaminado en un espacio limpio y lleno de vida.</p></div></div>
-    <div class="restore-scene" id="restore-scene" data-stage="polluted" role="img" aria-label="Parque contaminado junto a un río">
-      <div class="restore-sky"></div><div class="restore-sun"></div><div class="restore-hill back"></div><div class="restore-hill front"></div><div class="restore-water"></div><div class="restore-path"></div>
-      <div class="restore-tree"><span class="restore-trunk"></span><span class="restore-crown"></span></div>
-      <div class="restore-litter litter-a">🧴</div><div class="restore-litter litter-b">🥤</div><div class="restore-litter litter-c">🛍️</div><div class="restore-litter litter-d">📄</div>
-      <div class="restore-bins" aria-hidden="true"><span>♻️</span><span>🗑️</span></div><div class="restore-flowers" aria-hidden="true">🌼　🌱　🌼　🌿</div><div class="restore-fish" aria-hidden="true">🐟　🐠</div>
-      <div class="restore-scene-label" id="restore-scene-label">ANTES · ZONA DESCUIDADA</div>
-    </div>
-    <div class="restore-progress-line"><span id="restore-progress-text">0 de 4 acciones completadas</span><strong id="restore-progress-percent">0%</strong></div><div class="restore-progress"><i id="restore-progress-fill"></i></div>
-    <div class="restore-tasks" id="restore-tasks">
-      <button type="button" class="restore-task" data-restore-step="trash"><span class="restore-task-icon">🧹</span><span><b>Retirar los residuos</b><small>Recoge la basura de la orilla.</small></span><span class="restore-task-check">○</span></button>
-      <button type="button" class="restore-task" data-restore-step="bins"><span class="restore-task-icon">♻️</span><span><b>Separar y ordenar</b><small>Coloca recipientes para clasificar.</small></span><span class="restore-task-check">○</span></button>
-      <button type="button" class="restore-task" data-restore-step="tree"><span class="restore-task-icon">🌳</span><span><b>Plantar vegetación</b><small>Recupera las áreas verdes.</small></span><span class="restore-task-check">○</span></button>
-      <button type="button" class="restore-task" data-restore-step="water"><span class="restore-task-icon">💧</span><span><b>Recuperar el agua</b><small>Deja la orilla limpia y cuida el río.</small></span><span class="restore-task-check">○</span></button>
-    </div>
-    <div class="restore-footer"><p id="restore-status" role="status" aria-live="polite">Elige una acción para comenzar a recuperar el lugar.</p><button type="button" class="sback" id="restore-reset">Reiniciar entorno</button></div>
-  </article>
-  <article class="eco-mini-game" id="maze-game" aria-labelledby="maze-title">
-    <div class="eco-mini-head"><span class="eco-mini-number">02</span><div><h3 id="maze-title">Laberinto ecológico</h3><p>Recoge los 3 residuos que encuentres y llega al punto de reciclaje.</p></div></div>
-    <div class="maze-hud"><span>♻️ <b id="maze-collected">0 / 3</b> residuos</span><span>Pasos: <b id="maze-moves">0</b></span></div>
-    <div class="maze-grid" id="maze-grid" role="grid" aria-label="Laberinto visto desde arriba"></div>
-    <div class="maze-controls" aria-label="Controles del laberinto">
-      <span class="maze-control-spacer"></span><button type="button" data-maze-dir="up" aria-label="Mover arriba">↑</button><span class="maze-control-spacer"></span>
-      <button type="button" data-maze-dir="left" aria-label="Mover a la izquierda">←</button><button type="button" data-maze-dir="down" aria-label="Mover abajo">↓</button><button type="button" data-maze-dir="right" aria-label="Mover a la derecha">→</button>
-    </div>
-    <div class="maze-footer"><p id="maze-status" role="status" aria-live="polite">Usa las flechas o los botones para avanzar. Evita los árboles y busca los 3 residuos.</p><button type="button" class="sback" id="maze-reset">Nuevo laberinto</button></div>
-  </article>
-</section>
-
+<div class="game-feature-head"><span class="kick">Dos retos · Juegos 2D</span><h3>Recupera y explora</h3><p>Piensa antes de actuar: algunas soluciones parecen buenas, pero pueden empeorar el problema.</p></div>
+<article class="eco-mini-game" id="restore-game" aria-labelledby="restore-title">
+<div class="eco-mini-head"><span class="eco-mini-number">01</span><div><h3 id="restore-title">¿Solución o engaño?</h3><p>Recupera el parque y el río. Hay propuestas que parecen ecológicas, pero solo esconden el daño.</p></div></div>
+<div class="restore-scene" id="restore-scene" data-stage="polluted" role="img" aria-label="Parque descuidado junto a un río">
+<div class="restore-sky"></div><div class="restore-sun"></div><div class="restore-hill back"></div><div class="restore-hill front"></div><div class="restore-water"></div><div class="restore-path"></div><div class="restore-tree"><span class="restore-trunk"></span><span class="restore-crown"></span></div>
+<div class="restore-litter litter-a">🧴</div><div class="restore-litter litter-b">🥤</div><div class="restore-litter litter-c">🛍️</div><div class="restore-litter litter-d">📄</div><div class="restore-bins" aria-hidden="true"><span>♻️</span><span>🗑️</span></div><div class="restore-flowers" aria-hidden="true">🌼　🌱　🌼</div><div class="restore-fish" aria-hidden="true">🐟　🐠</div><div class="restore-scene-label" id="restore-scene-label">ANTES · ZONA DESCUIDADA</div></div>
+<div class="restore-progress-line"><span id="restore-progress-text">Decisiones revisadas: 0 de 7</span><strong id="restore-progress-percent">0%</strong></div><div class="restore-progress"><i id="restore-progress-fill"></i></div><p class="restore-score" id="restore-score">Aciertos: 0/4 · Trampas elegidas: 0/3</p>
+<div class="restore-tasks" id="restore-tasks">
+<button type="button" class="restore-task" data-restore-choice="trash" data-restore-good="true"><span class="restore-task-icon">🧹</span><span><b>Retirar y separar los residuos</b><small>Limpiar la orilla y clasificar lo recuperable.</small></span><span class="restore-task-check">?</span></button>
+<button type="button" class="restore-task" data-restore-choice="bins" data-restore-good="true"><span class="restore-task-icon">♻️</span><span><b>Colocar tachos diferenciados</b><small>Señalizar cada recipiente para separar.</small></span><span class="restore-task-check">?</span></button>
+<button type="button" class="restore-task" data-restore-choice="tree" data-restore-good="true"><span class="restore-task-icon">🌳</span><span><b>Plantar especies nativas</b><small>Recuperar la vegetación adecuada del lugar.</small></span><span class="restore-task-check">?</span></button>
+<button type="button" class="restore-task" data-restore-choice="water" data-restore-good="true"><span class="restore-task-icon">💧</span><span><b>Evitar vertidos al río</b><small>Organizar su limpieza y prevenir nuevas descargas.</small></span><span class="restore-task-check">?</span></button>
+<button type="button" class="restore-task" data-restore-choice="hide" data-restore-good="false"><span class="restore-task-icon">🟫</span><span><b>Cubrir la basura con tierra</b><small>Así el parque se verá limpio más rápido.</small></span><span class="restore-task-check">?</span></button>
+<button type="button" class="restore-task" data-restore-choice="scent" data-restore-good="false"><span class="restore-task-icon">✨</span><span><b>Perfumar el agua del río</b><small>El buen olor hará que parezca más saludable.</small></span><span class="restore-task-check">?</span></button>
+<button type="button" class="restore-task" data-restore-choice="cement" data-restore-good="false"><span class="restore-task-icon">🧱</span><span><b>Cubrir el área verde con cemento</b><small>Será más fácil mantener el suelo sin hojas.</small></span><span class="restore-task-check">?</span></button>
+</div>
+<div class="restore-footer"><p id="restore-status" role="status" aria-live="polite">Elige una propuesta. Después descubrirás si ayudaba de verdad o solo lo parecía.</p><button type="button" class="sback" id="restore-reset">Nuevo intento</button></div>
+</article>
+<article class="eco-mini-game" id="maze-game" aria-labelledby="maze-title">
+<div class="eco-mini-head"><span class="eco-mini-number">02</span><div><h3 id="maze-title">Laberinto ecológico</h3><p>Explora el bosque, recoge los 4 residuos y encuentra la salida hacia el centro de reciclaje. Cada partida crea un mapa diferente.</p></div></div>
+<div class="maze-hud"><span>♻️ <b id="maze-collected">0 / 4</b> residuos</span><span>Pasos: <b id="maze-moves">0</b></span></div><div class="maze-grid" id="maze-grid" role="grid" aria-label="Laberinto ecológico visto desde arriba"></div>
+<div class="maze-legend"><span><i class="legend-player"></i> Tú</span><span><i class="legend-tree"></i> Árboles</span><span>🏁 Salida</span></div>
+<div class="maze-controls" aria-label="Controles del laberinto"><span class="maze-control-spacer"></span><button type="button" data-maze-dir="up" aria-label="Mover arriba">↑</button><span class="maze-control-spacer"></span><button type="button" data-maze-dir="left" aria-label="Mover a la izquierda">←</button><button type="button" data-maze-dir="down" aria-label="Mover abajo">↓</button><button type="button" data-maze-dir="right" aria-label="Mover a la derecha">→</button></div>
+<div class="maze-footer"><p id="maze-status" role="status" aria-live="polite">Usa las flechas del teclado o los botones para moverte.</p><button type="button" class="sback" id="maze-reset">Nuevo laberinto</button></div>
+</article></section>
 <div class="quiz-board rv" aria-labelledby="quiz-board-title">
  <div class="quiz-board-head">
   <div><span class="kick">Ranking diario</span><h3 id="quiz-board-title">Top del quiz</h3><p id="quiz-board-date">Cargando el ranking de hoy…</p></div>
@@ -1541,95 +1477,59 @@ $('#story-continue').addEventListener('click',showStoryScenario);
 $('#story-start').addEventListener('click',function(){if(!storyGender||!storyPlace)return;storyScore=50;storyDecision=0;storyDeck=[];storySetup.hidden=true;storyEnd.hidden=true;storyPlay.hidden=false;updateStoryScore();storyScene.classList.remove('action-good','action-bad');showStoryScenario();});
 
 
-/* ===== DOS JUEGOS EXTRA: RESTAURAR ENTORNO Y LABERINTO ===== */
+/* ===== JUEGOS EXTRA: DECISIONES Y LABERINTO MEJORADO ===== */
 (function(){
- var restoreScene=document.getElementById('restore-scene');
- if(restoreScene){
-  var restoreButtons=Array.prototype.slice.call(document.querySelectorAll('[data-restore-step]'));
-  var restoreDone={trash:false,bins:false,tree:false,water:false};
-  var restoreFill=document.getElementById('restore-progress-fill'),restoreText=document.getElementById('restore-progress-text'),restorePercent=document.getElementById('restore-progress-percent'),restoreStatus=document.getElementById('restore-status');
-  var restoreLabels={trash:'Residuos retirados',bins:'Recipientes colocados',tree:'Vegetación recuperada',water:'Agua recuperada'};
-  function updateRestore(){
-   var count=Object.keys(restoreDone).filter(function(k){return restoreDone[k]}).length,pct=Math.round(count/4*100);
-   restoreFill.style.width=pct+'%';restoreText.textContent=count+' de 4 acciones completadas';restorePercent.textContent=pct+'%';
-   if(count===4){restoreScene.classList.add('all-clean');restoreScene.dataset.stage='clean';document.getElementById('restore-scene-label').textContent='DESPUÉS · ENTORNO RECUPERADO';restoreStatus.textContent='¡Lo lograste! El lugar volvió a tener vida gracias a tus acciones.';}
+ var scene=document.getElementById('restore-scene');
+ if(scene){
+  var buttons=Array.prototype.slice.call(document.querySelectorAll('[data-restore-choice]')),box=document.getElementById('restore-tasks'),fill=document.getElementById('restore-progress-fill'),progress=document.getElementById('restore-progress-text'),percent=document.getElementById('restore-progress-percent'),status=document.getElementById('restore-status'),score=document.getElementById('restore-score'),sceneLabel=document.getElementById('restore-scene-label');
+  var answered=0,correct=0,traps=0;
+  var explanations={trash:'Correcto: retirar y separar los residuos permite gestionarlos adecuadamente.',bins:'Correcto: los recipientes diferenciados facilitan separar los residuos.',tree:'Correcto: las especies nativas ayudan a recuperar el hábitat local.',water:'Correcto: prevenir vertidos y organizar la limpieza evita nueva contaminación.',hide:'Trampa: cubrir la basura no la elimina; los residuos siguen contaminando el suelo.',scent:'Trampa: el perfume solo disimula el olor; no limpia el agua y puede añadir sustancias.',cement:'Trampa: el cemento reduce las áreas verdes y el paso del agua al suelo.'};
+  function paintProgress(){
+   var pct=Math.round(answered/buttons.length*100);fill.style.width=pct+'%';progress.textContent='Decisiones revisadas: '+answered+' de '+buttons.length;percent.textContent=pct+'%';score.textContent='Aciertos: '+correct+'/4 · Trampas elegidas: '+traps+'/3';
+   if(answered===buttons.length){if(correct===4){scene.classList.add('all-clean');sceneLabel.textContent='DESPUÉS · ENTORNO RECUPERADO';status.textContent='¡Excelente! Elegiste las 4 acciones útiles y evitaste las 3 propuestas engañosas.';}else status.textContent='Reto terminado: '+correct+' de 4 acciones correctas. Lee las explicaciones e inténtalo otra vez.';}
   }
-  restoreButtons.forEach(function(btn){btn.addEventListener('click',function(){
-   var step=btn.dataset.restoreStep;if(restoreDone[step])return;
-   restoreDone[step]=true;btn.disabled=true;btn.classList.add('done');btn.querySelector('.restore-task-check').textContent='✓';
-   if(step==='trash')restoreScene.classList.add('debris-cleared');
-   if(step==='bins')restoreScene.classList.add('bins-added');
-   if(step==='tree')restoreScene.classList.add('tree-grown');
-   if(step==='water')restoreScene.classList.add('water-clean');
-   var remaining=4-Object.keys(restoreDone).filter(function(k){return restoreDone[k]}).length;
-   restoreStatus.textContent=remaining?restoreLabels[step]+'. Te '+(remaining===1?'falta':'faltan')+' '+remaining+' acciones para recuperar el entorno.':restoreLabels[step]+'.';
-   updateRestore();
+  function reset(){
+   answered=0;correct=0;traps=0;scene.className='restore-scene';sceneLabel.textContent='ANTES · ZONA DESCUIDADA';buttons.forEach(function(btn){btn.disabled=false;btn.classList.remove('good','bad');btn.querySelector('.restore-task-check').textContent='?';});
+   var order=buttons.slice();for(var i=order.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=order[i];order[i]=order[j];order[j]=tmp;}order.forEach(function(btn){box.appendChild(btn);});
+   status.textContent='Elige una propuesta. Algunas suenan bien, pero no todas solucionan el problema.';paintProgress();
+  }
+  buttons.forEach(function(btn){btn.addEventListener('click',function(){
+   if(btn.disabled)return;btn.disabled=true;answered++;var key=btn.dataset.restoreChoice,isGood=btn.dataset.restoreGood==='true';btn.classList.add(isGood?'good':'bad');btn.querySelector('.restore-task-check').textContent=isGood?'✓':'✕';
+   if(isGood){correct++;if(key==='trash')scene.classList.add('debris-cleared');if(key==='bins')scene.classList.add('bins-added');if(key==='tree')scene.classList.add('tree-grown');if(key==='water')scene.classList.add('water-clean');}else traps++;
+   status.textContent=explanations[key];paintProgress();
   });});
-  document.getElementById('restore-reset').addEventListener('click',function(){
-   Object.keys(restoreDone).forEach(function(k){restoreDone[k]=false;});
-   restoreScene.className='restore-scene';restoreScene.dataset.stage='polluted';document.getElementById('restore-scene-label').textContent='ANTES · ZONA DESCUIDADA';
-   restoreButtons.forEach(function(btn){btn.disabled=false;btn.classList.remove('done');btn.querySelector('.restore-task-check').textContent='○';});
-   restoreStatus.textContent='Elige una acción para comenzar a recuperar el lugar.';updateRestore();
-  });
-  updateRestore();
+  document.getElementById('restore-reset').addEventListener('click',reset);reset();
  }
- var mazeGrid=document.getElementById('maze-grid');
- if(mazeGrid){
-  var mazeSize=9,maze=[],mazePlayer={x:1,y:1},mazeExit={x:7,y:7},mazeItems={},mazeCount=0,mazeMoves=0,mazeWon=false;
-  var mazeStatus=document.getElementById('maze-status'),mazeCollected=document.getElementById('maze-collected'),mazeMovesEl=document.getElementById('maze-moves');
-  function buildMaze(){
-   maze=Array.from({length:mazeSize},function(){return Array(mazeSize).fill('#');});
-   var stack=[[1,1]],dirs=[[0,-2],[2,0],[0,2],[-2,0]];maze[1][1]='.';
-   while(stack.length){
-    var current=stack[stack.length-1],options=[];
-    dirs.forEach(function(d){var nx=current[0]+d[0],ny=current[1]+d[1];if(nx>0&&ny>0&&nx<mazeSize-1&&ny<mazeSize-1&&maze[ny][nx]==='#')options.push([nx,ny,d]);});
-    if(!options.length){stack.pop();continue;}
-    var pick=options[Math.floor(Math.random()*options.length)],nx=pick[0],ny=pick[1],d=pick[2];
-    maze[current[1]+d[1]/2][current[0]+d[0]/2]='.';maze[ny][nx]='.';stack.push([nx,ny]);
+ var grid=document.getElementById('maze-grid');
+ if(grid){
+  var size=13,map=[],cells=[],player={x:1,y:1},exit={x:11,y:11},items={},collected=0,moves=0,won=false;
+  var mazeStatus=document.getElementById('maze-status'),collectedText=document.getElementById('maze-collected'),movesText=document.getElementById('maze-moves');
+  function drawCell(x,y){
+   var cell=cells[y][x],key=x+','+y;cell.className='maze-cell '+(map[y][x]==='#'?'wall':'path');
+   if(x===player.x&&y===player.y){cell.classList.add('player');cell.textContent='🧑';}else if(x===exit.x&&y===exit.y){cell.classList.add('exit');cell.textContent='🏁';}else cell.textContent=items[key]||'';
+  }
+  function newMaze(){
+   map=Array.from({length:size},function(){return Array(size).fill('#');});var stack=[[1,1]],directions=[[0,-2],[2,0],[0,2],[-2,0]];map[1][1]='.';
+   while(stack.length){var last=stack[stack.length-1],choices=[];directions.forEach(function(dir){var x=last[0]+dir[0],y=last[1]+dir[1];if(x>0&&y>0&&x<size-1&&y<size-1&&map[y][x]==='#')choices.push([x,y,dir]);});
+    if(choices.length===0){stack.pop();continue;}var chosen=choices[Math.floor(Math.random()*choices.length)],nx=chosen[0],ny=chosen[1],dir=chosen[2];map[last[1]+dir[1]/2][last[0]+dir[0]/2]='.';map[ny][nx]='.';stack.push([nx,ny]);
    }
-   mazePlayer={x:1,y:1};mazeExit={x:7,y:7};mazeItems={};mazeCount=0;mazeMoves=0;mazeWon=false;
-   var available=[];
-   for(var y=1;y<mazeSize-1;y++)for(var x=1;x<mazeSize-1;x++)if(maze[y][x]==='.'&&!(x===1&&y===1)&&!(x===7&&y===7))available.push({x:x,y:y});
-   ['🧴','📄','🥤'].forEach(function(item){var idx=Math.floor(Math.random()*available.length),pos=available.splice(idx,1)[0];mazeItems[pos.x+','+pos.y]=item;});
-   mazeStatus.textContent='Usa las flechas o los botones para avanzar. Evita los árboles y busca los 3 residuos.';updateMaze();
+   player={x:1,y:1};exit={x:size-2,y:size-2};items={};collected=0;moves=0;won=false;var positions=[];
+   for(var y=1;y<size-1;y++)for(var x=1;x<size-1;x++)if(map[y][x]==='.'&&!(x===1&&y===1)&&!(x===exit.x&&y===exit.y))positions.push([x,y]);
+   for(var i=positions.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=positions[i];positions[i]=positions[j];positions[j]=tmp;}['🧴','📄','🥤','🥫'].forEach(function(icon,index){items[positions[index][0]+','+positions[index][1]]=icon;});
+   grid.replaceChildren();cells=[];for(var row=0;row<size;row++){cells[row]=[];for(var col=0;col<size;col++){var cell=document.createElement('div');cell.className='maze-cell';cell.setAttribute('role','gridcell');grid.appendChild(cell);cells[row][col]=cell;}}
+   for(var yy=0;yy<size;yy++)for(var xx=0;xx<size;xx++)drawCell(xx,yy);collectedText.textContent='0 / 4';movesText.textContent='0';mazeStatus.textContent='Encuentra los 4 residuos y llega a la bandera. El mapa cambia al reiniciar.';
   }
-  function updateMaze(){
-   mazeGrid.replaceChildren();
-   for(var y=0;y<mazeSize;y++)for(var x=0;x<mazeSize;x++){
-    var cell=document.createElement('div');cell.className='maze-cell '+(maze[y][x]==='#'?'wall':'path');cell.setAttribute('role','gridcell');
-    var key=x+','+y;
-    if(x===mazePlayer.x&&y===mazePlayer.y){cell.classList.add('player');cell.textContent='🧑';cell.setAttribute('aria-label','Tu posición');}
-    else if(x===mazeExit.x&&y===mazeExit.y){cell.classList.add('exit');cell.textContent='🏁';cell.setAttribute('aria-label','Punto de reciclaje');}
-    else if(mazeItems[key]){cell.classList.add('item');cell.textContent=mazeItems[key];cell.setAttribute('aria-label','Residuo por recoger');}
-    else if(maze[y][x]==='#')cell.setAttribute('aria-label','Árbol');
-    mazeGrid.appendChild(cell);
-   }
-   mazeCollected.textContent=mazeCount+' / 3';mazeMovesEl.textContent=String(mazeMoves);
+  function move(dx,dy){
+   if(won)return;var x=player.x+dx,y=player.y+dy;if(x<0||y<0||x>=size||y>=size||map[y][x]==='#'){mazeStatus.textContent='Camino bloqueado por los árboles. Prueba otra dirección.';return;}
+   var oldX=player.x,oldY=player.y;player={x:x,y:y};moves++;var key=x+','+y;if(items[key]){delete items[key];collected++;mazeStatus.textContent='¡Residuo recuperado! Sigue explorando.';}
+   drawCell(oldX,oldY);drawCell(x,y);collectedText.textContent=collected+' / 4';movesText.textContent=String(moves);
+   if(x===exit.x&&y===exit.y){if(collected===4){won=true;mazeStatus.textContent='¡Nivel completado! Recuperaste los 4 residuos y llegaste al centro de reciclaje.';}else mazeStatus.textContent='Llegaste a la salida, pero faltan '+(4-collected)+' residuos.';}else if(collected===4)mazeStatus.textContent='¡Encontraste los 4 residuos! Ahora llega a la bandera.';
   }
-  function moveMaze(dx,dy){
-   if(mazeWon)return;
-   var nx=mazePlayer.x+dx,ny=mazePlayer.y+dy;
-   if(nx<0||ny<0||nx>=mazeSize||ny>=mazeSize||maze[ny][nx]==='#'){mazeStatus.textContent='¡Hay árboles en ese camino! Busca otra ruta.';return;}
-   mazePlayer={x:nx,y:ny};mazeMoves++;var key=nx+','+ny;
-   if(mazeItems[key]){delete mazeItems[key];mazeCount++;mazeStatus.textContent='¡Bien! Encontraste un residuo. Sigue explorando.';}
-   if(nx===mazeExit.x&&ny===mazeExit.y){
-    if(mazeCount===3){mazeWon=true;mazeStatus.textContent='¡Nivel completado! Recogiste los 3 residuos y llegaste al punto de reciclaje.';}
-    else mazeStatus.textContent='Encontraste la salida, pero todavía te faltan residuos. Busca en los caminos que no exploraste.';
-   }else if(mazeCount===3)mazeStatus.textContent='¡Ya encontraste los 3 residuos! Ahora llega a la bandera.';
-   updateMaze();
-  }
-  document.querySelectorAll('[data-maze-dir]').forEach(function(btn){btn.addEventListener('click',function(){
-   var d=btn.dataset.mazeDir;if(d==='up')moveMaze(0,-1);if(d==='down')moveMaze(0,1);if(d==='left')moveMaze(-1,0);if(d==='right')moveMaze(1,0);
-  });});
-  document.addEventListener('keydown',function(e){
-   var sheet=document.getElementById('v-juego');if(!sheet||sheet.getAttribute('aria-hidden')!=='false'||/INPUT|TEXTAREA|SELECT/.test((e.target&&e.target.tagName)||''))return;
-   var dirs={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};
-   if(dirs[e.key]){e.preventDefault();moveMaze(dirs[e.key][0],dirs[e.key][1]);}
-  });
-  document.getElementById('maze-reset').addEventListener('click',buildMaze);buildMaze();
+  document.querySelectorAll('[data-maze-dir]').forEach(function(btn){btn.addEventListener('click',function(){var dir=btn.dataset.mazeDir;if(dir==='up')move(0,-1);else if(dir==='down')move(0,1);else if(dir==='left')move(-1,0);else move(1,0);});});
+  document.addEventListener('keydown',function(e){var sheet=document.getElementById('v-juego');if(!sheet||sheet.getAttribute('aria-hidden')!=='false'||/INPUT|TEXTAREA|SELECT/.test((e.target&&e.target.tagName)||''))return;var dirs={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};if(dirs[e.key]){e.preventDefault();move(dirs[e.key][0],dirs[e.key][1]);}});
+  document.getElementById('maze-reset').addEventListener('click',newMaze);newMaze();
  }
 })();
-
 var quizBoardList=$('#quiz-board-list');
 var quizBoardDate=$('#quiz-board-date');
 var quizBoardStatus=$('#quiz-board-status');
