@@ -476,7 +476,7 @@ section.sheet{padding:0}
 .story-end h3{margin:.3rem 0 .7rem;font:900 clamp(2rem,7vw,3rem) var(--fh);color:var(--g1)}
 .story-end p{margin:0 auto 1rem;color:var(--mut)}
 .qtime{color:#ffd58a;font:900 1rem var(--fh);white-space:nowrap;letter-spacing:.05em}
-@media(max-width:640px){.wall-board-frame{border-width:8px;padding:.45rem}.wall-ticket-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}.wall-ticket{min-height:74px;aspect-ratio:auto;padding:.35rem;overflow:hidden}.wall-ticket-word{font-size:clamp(.82rem,4vw,1.05rem);line-height:1.15;overflow-wrap:break-word;word-break:normal}.wall-ticket.is-filled .wall-ticket-word{font-size:clamp(.82rem,4vw,1.05rem);line-height:1.15}.story-scene{min-height:230px;aspect-ratio:4/3}.story-person{left:39%;transform:scale(.9);transform-origin:bottom center}.story-options{grid-template-columns:1fr}.story-tree{left:4%;transform:scale(.85);transform-origin:bottom left}.story-building{right:3%;width:50%}}
+@media(max-width:640px){.wall-board-frame{width:100%;min-width:0;box-sizing:border-box;border-width:8px;padding:.45rem}.wall-ticket-grid{width:100%;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}.wall-ticket{width:100%;min-width:0;min-height:76px;box-sizing:border-box;aspect-ratio:auto;padding:.35rem;overflow:hidden}.wall-ticket-word,.wall-ticket.is-filled .wall-ticket-word{display:block;width:100%;min-width:0;max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;word-break:normal;hyphens:auto;font-size:clamp(.78rem,3.8vw,1rem);line-height:1.12;letter-spacing:-.02em}.story-scene{min-height:230px;aspect-ratio:4/3}.story-person{left:39%;transform:scale(.9);transform-origin:bottom center}.story-options{grid-template-columns:1fr}.story-tree{left:4%;transform:scale(.85);transform-origin:bottom left}.story-building{right:3%;width:50%}}
 @media(prefers-reduced-motion:reduce){.story-scene *,.story-scene,.wall-ticket{animation:none!important;transition:none!important}}
 
 </style>
@@ -1293,17 +1293,21 @@ var storyGender='',storyPlace='',storyScore=50,storyDeck=[],storyCurrent=null,st
 var storySetup=$('#story-setup'),storyPlay=$('#story-play'),storyEnd=$('#story-end'),storyScene=$('#story-scene'),storyPerson=$('#story-person'),storyObject=$('#story-object'),storyOptions=$('#story-options'),storyPrompt=$('#story-prompt'),storyFeedback=$('#story-feedback'),storyMeterFill=$('#story-meter-fill'),storyPercent=$('#story-percent'),storyMeter=$('#story-meter');
 function shuffleStory(items){var copy=items.slice();for(var i=copy.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),v=copy[i];copy[i]=copy[j];copy[j]=v;}return copy;}
 function updateStoryScore(){storyMeterFill.style.width=storyScore+'%';storyPercent.textContent=Math.round(storyScore)+'%';storyMeter.setAttribute('aria-valuenow',String(Math.round(storyScore)));}
-$('[data-story-gender]').forEach(function(button){button.addEventListener('click',function(){
- storyGender=button.dataset.storyGender;$('[data-story-gender]').forEach(function(x){x.classList.toggle('selected',x===button)});
- $('#story-setup-hint').textContent=storyPlace?'Ya puedes comenzar tu historia.':'Ahora elige el lugar donde empezará.';
+storySetup.addEventListener('click',function(event){
+ var button=event.target.closest('[data-story-gender], [data-story-place]');
+ if(!button||!storySetup.contains(button))return;
+ if(button.hasAttribute('data-story-gender')){
+  storyGender=button.dataset.storyGender;
+  Array.prototype.forEach.call(storySetup.querySelectorAll('[data-story-gender]'),function(x){x.classList.toggle('selected',x===button)});
+  $('#story-setup-hint').textContent=storyPlace?'Ya puedes comenzar tu historia.':'Ahora elige el lugar donde empezará.';
+ }else{
+  storyPlace=button.dataset.storyPlace;
+  Array.prototype.forEach.call(storySetup.querySelectorAll('[data-story-place]'),function(x){x.classList.toggle('selected',x===button)});
+  $('#story-place-label').textContent=button.textContent;
+  $('#story-setup-hint').textContent=storyGender?'Ya puedes comenzar tu historia.':'Ahora elige tu personaje.';
+ }
  $('#story-start').disabled=!(storyGender&&storyPlace);
-})});
-$('[data-story-place]').forEach(function(button){button.addEventListener('click',function(){
- storyPlace=button.dataset.storyPlace;$('[data-story-place]').forEach(function(x){x.classList.toggle('selected',x===button)});
- $('#story-place-label').textContent=button.textContent;
- $('#story-setup-hint').textContent=storyGender?'Ya puedes comenzar tu historia.':'Ahora elige tu personaje.';
- $('#story-start').disabled=!(storyGender&&storyPlace);
-})});
+});
 function nextStoryScenario(){if(!storyDeck.length)storyDeck=shuffleStory(STORY_BANK[storyPlace]);return storyDeck.pop();}
 function showStoryScenario(){
  storyLocked=false;storyCurrent=nextStoryScenario();storyDecision++;storyScene.dataset.place=storyPlace;storyPerson.dataset.gender=storyGender;storyObject.textContent=storyCurrent.item;
@@ -1315,7 +1319,7 @@ function showStoryScenario(){
 function finishStory(won){
  storyPlay.hidden=true;storyEnd.hidden=false;
  storyEnd.innerHTML=won?'<h3>¡Felicidades!</h3><p>Tomaste buenas decisiones y llegaste a 100 puntos. Tus acciones ayudaron a cuidar el entorno.</p><strong>100 / 100 puntos</strong><p><button class="qbtn" id="story-change" type="button">Elegir otro lugar</button></p>':'<h3>¡Perdiste!</h3><p>Tu puntuación llegó a 0. Algunas decisiones perjudicaron el lugar. Puedes volver a elegir un escenario y probar otras acciones.</p><strong>0 / 100 puntos</strong><p><button class="qbtn" id="story-change" type="button">Elegir otro lugar</button></p>';
- $('#story-change').addEventListener('click',function(){storyEnd.hidden=true;storySetup.hidden=false;storyPlace='';storyGender='';storyDecision=0;$('[data-story-gender],[data-story-place]').forEach(function(x){x.classList.remove('selected')});$('#story-start').disabled=true;$('#story-setup-hint').textContent='Selecciona un personaje y un lugar para comenzar.';});
+ $('#story-change').addEventListener('click',function(){storyEnd.hidden=true;storySetup.hidden=false;storyPlace='';storyGender='';storyDecision=0;Array.prototype.forEach.call(storySetup.querySelectorAll('[data-story-gender],[data-story-place]'),function(x){x.classList.remove('selected')});$('#story-start').disabled=true;$('#story-setup-hint').textContent='Selecciona un personaje y un lugar para comenzar.';});
 }
 function answerStory(index){
  if(storyLocked)return;storyLocked=true;var good=index===storyCurrent.correct;
