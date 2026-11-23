@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>MUNDO VERDE · Exploración 3D</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101b19;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;color:#f4f5ee}body{user-select:none}#game{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}
+#hud{position:fixed;inset:0;pointer-events:none}.glass{background:linear-gradient(135deg,rgba(13,25,23,.83),rgba(24,39,34,.58));border:1px solid rgba(215,232,212,.2);backdrop-filter:blur(9px);box-shadow:0 12px 34px #0003}
+#brand{position:absolute;top:18px;left:18px;padding:12px 16px;border-radius:15px;letter-spacing:.12em;font-weight:900;font-size:12px;color:#b9e5a6}#mission{position:absolute;top:18px;right:18px;width:min(330px,calc(100% - 36px));padding:16px 18px;border-radius:17px}#mission small{color:#a6c4b0;letter-spacing:.14em;text-transform:uppercase;font-size:10px}#mission h2{font-size:17px;margin:5px 0 7px}#mission p{font-size:12px;color:#cbd7ce;line-height:1.45;margin:0}#progress{height:5px;background:#30453b;border-radius:8px;margin-top:12px;overflow:hidden}#progress i{display:block;height:100%;width:0;background:#a9e58c;transition:width .3s}
+#stats{position:absolute;left:18px;bottom:18px;padding:12px 15px;border-radius:14px;display:flex;gap:15px;font-size:12px;color:#d7e7d8}#stats strong{color:#c4ef9d}
+#hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);padding:11px 17px;border-radius:12px;font-size:12px;white-space:nowrap;color:#e7f1e7}
+#cross{position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%);opacity:.4}#cross:before,#cross:after{content:"";position:absolute;background:#fff}#cross:before{width:1px;height:14px;left:12px;top:5px}#cross:after{height:1px;width:14px;left:5px;top:12px}
+#start{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(135deg,#101b19cc,#15251ccc);z-index:5;padding:20px}#start-card{max-width:600px;width:100%;border:1px solid #ffffff25;border-radius:25px;background:linear-gradient(145deg,#1a3027ed,#101b18ed);padding:clamp(22px,5vw,42px);box-shadow:0 30px 90px #0008}#start-card .eyebrow{font-size:11px;letter-spacing:.2em;color:#a9df92;font-weight:800}#start-card h1{font-size:clamp(34px,7vw,58px);line-height:.98;margin:14px 0 12px;letter-spacing:-.04em}#start-card p{color:#c4d4c9;line-height:1.55;font-size:14px}#start-card .features{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}#start-card .features span{border:1px solid #ffffff20;background:#ffffff08;border-radius:99px;padding:7px 11px;font-size:11px;color:#d9e9d8}button{font:inherit;color:inherit;cursor:pointer;border:0}#play{background:#b4e69a;color:#102018;font-weight:900;padding:13px 24px;border-radius:12px;box-shadow:0 8px 24px #8cce6b44;transition:.2s}#play:hover{transform:translateY(-2px);filter:brightness(1.05)}#loading{font-size:12px;color:#a8c9b2;margin-top:12px}
+#toast{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);padding:14px 18px;border-radius:13px;background:#14251eee;border:1px solid #a9e58c55;font-weight:700;font-size:14px;opacity:0;transition:opacity .25s;max-width:80%;text-align:center}
+#mobile{position:absolute;right:18px;bottom:18px;display:none;pointer-events:auto;gap:8px;align-items:end}#pad{display:grid;grid-template-columns:44px 44px 44px;grid-template-rows:44px 44px 44px;gap:4px}#pad button,#act{border-radius:13px;background:#14251dbb;border:1px solid #ffffff30;backdrop-filter:blur(8px);font-size:18px}#pad .up{grid-column:2}#pad .left{grid-column:1;grid-row:2}#pad .down{grid-column:2;grid-row:2}#pad .right{grid-column:3;grid-row:2}#act{height:46px;padding:0 15px;background:#a9df92;color:#102018;font-size:12px;font-weight:900}
+#settings{position:absolute;right:18px;bottom:18px;pointer-events:auto;border-radius:12px;background:#13241ccc;border:1px solid #ffffff25;padding:10px 13px;color:#dbe8db;font-size:11px}#settings select{background:#20372b;color:#fff;border:1px solid #ffffff25;border-radius:7px;padding:5px;margin-left:6px}
+#back{position:absolute;left:18px;top:70px;pointer-events:auto;border-radius:10px;padding:8px 12px;background:#10201bc9;border:1px solid #ffffff20;color:#e3eee4;font-size:11px;text-decoration:none}
+@media(max-width:700px){#brand{top:10px;left:10px;padding:9px 11px}#mission{top:10px;right:10px;padding:12px;width:min(260px,calc(100% - 20px))}#mission h2{font-size:15px}#mission p{font-size:11px}#stats{bottom:12px;left:10px;padding:9px 11px;gap:9px;font-size:10px}#hint{bottom:118px;font-size:10px;max-width:80%;white-space:normal;text-align:center}#mobile{display:flex;right:10px;bottom:10px}#settings{left:10px;right:auto;bottom:70px}#back{top:60px;left:10px}#cross{display:none}}
+</style>
+</head>
+<body>
+<div id="game"></div>
+<div id="hud">
+<div id="brand" class="glass">MUNDO VERDE <span style="color:#fff">/ EXPLORACIÓN</span></div>
+<a id="back" href="../contaminacion/">← VOLVER A LA PÁGINA</a>
+<div id="mission" class="glass"><small>PRIMERA MISIÓN</small><h2>Recupera el arroyo</h2><p>Encuentra y recoge 5 residuos cerca del agua. Después, activa el punto de restauración.</p><div id="progress"><i></i></div></div>
+<div id="stats" class="glass"><span>RESIDUOS <strong id="count">0 / 5</strong></span><span>ESTADO <strong id="state">DETERIORADO</strong></span></div>
+<div id="hint" class="glass">WASD / flechas · Mueve el mouse para mirar · E interactuar</div><div id="cross"></div><div id="toast"></div>
+<div id="settings" class="glass">CALIDAD <select id="quality"><option value="low">Baja</option><option value="medium" selected>Media</option><option value="high">Alta</option></select></div>
+<div id="mobile"><div id="pad"><button class="up" data-key="w">▲</button><button class="left" data-key="a">◀</button><button class="down" data-key="s">▼</button><button class="right" data-key="d">▶</button></div><button id="act">INTERACTUAR</button></div>
+</div>
+<div id="start"><div id="start-card"><div class="eyebrow">PROYECTO · MUNDO ABIERTO 3D</div><h1>EL VALLE<br><span style="color:#b4e69a">RENACE</span></h1><p>Explora un valle natural, descubre sus senderos y ayuda a recuperar un arroyo contaminado. Esta es una primera zona jugable: camina, observa y recoge residuos para desbloquear la restauración.</p><div class="features"><span>🌲 Exploración libre</span><span>🌫️ Atmósfera</span><span>💧 Agua dinámica</span><span>♻️ Misión</span></div><button id="play">ENTRAR AL VALLE</button><div id="loading">Preparando el entorno 3D…</div></div></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const root=document.getElementById('game'),start=document.getElementById('start'),loading=document.getElementById('loading'),toast=document.getElementById('toast');
+let renderer,scene,camera,clock,player,terrain,water,waterMat,streamClean=false,controls=false,locked=false,quality='medium',collected=0,items=[],keys={},camYaw=0,camPitch=.28,toastTimer,trees=[],restoration;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const terrainHeight=(x,z)=>Math.sin(x*.075)*1.4+Math.cos(z*.09)*1.1+Math.sin((x+z)*.035)*2.2+Math.cos(x*.04-z*.08)*1.3;
+function showToast(msg){toast.textContent=msg;toast.style.opacity=1;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.style.opacity=0,2300)}
+function material(color,rough=1,metal=0){return new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal})}
+function mesh(geo,mat,x,y,z,parent=scene){let m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);parent.add(m);return m}
+function makeTexture(base,accent,scale=128){const c=document.createElement('canvas');c.width=c.height=scale;const ctx=c.getContext('2d');ctx.fillStyle=base;ctx.fillRect(0,0,scale,scale);for(let i=0;i<scale*2;i++){ctx.fillStyle=accent+(Math.random()*.15+.05)+')';ctx.fillRect(Math.random()*scale,Math.random()*scale,1+Math.random()*4,1+Math.random()*3)}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(20,20);return t}
+function createTerrain(){
+ const geo=new THREE.PlaneGeometry(180,180,110,110);geo.rotateX(-Math.PI/2);const p=geo.attributes.position;
+ for(let i=0;i<p.count;i++){let x=p.getX(i),z=p.getZ(i);p.setY(i,terrainHeight(x,z));}geo.computeVertexNormals();
+ const tex=makeTexture('#53654b','rgba(30,45,24,');const mat=new THREE.MeshStandardMaterial({map:tex,roughness:1});
+ terrain=mesh(geo,mat,0,0,0);terrain.receiveShadow=true;
+ // Ground edge cliffs and distant hills
+ const hillMat=material('#52695b');
+ for(let i=0;i<24;i++){let a=i/24*Math.PI*2,r=82+Math.random()*8,h=12+Math.random()*16;let g=new THREE.ConeGeometry(14,h,6);let m=mesh(g,hillMat,Math.cos(a)*r,-3,Math.sin(a)*r);m.rotation.y=Math.random()*Math.PI;}
+}
+function createTree(x,z,s=1,kind=0){
+ const y=terrainHeight(x,z),g=new THREE.Group();g.position.set(x,y,z);g.scale.setScalar(s);scene.add(g);
+ const trunk=mesh(new THREE.CylinderGeometry(.22,.42,4.3,7),material('#594735'),0,2.15,0,g);trunk.castShadow=true;
+ const greens=['#405e3d','#547849','#6b8752','#39583c'];for(let j=0;j<3;j++){let crown=mesh(new THREE.IcosahedronGeometry(2.3-j*.25,1),material(greens[(kind+j)%4]),0,4+j*1.15,0,g);crown.scale.set(1.0+j*.08,.9,1.0+j*.05);crown.castShadow=true;}
+ trees.push(g);return g;
+}
+function createRock(x,z,s=1){let y=terrainHeight(x,z);let r=mesh(new THREE.DodecahedronGeometry(s,0),material('#777c70'),x,y+s*.45,z);r.rotation.set(Math.random(),Math.random(),Math.random());r.castShadow=true;r.receiveShadow=true;}
+function createStream(){
+ const pts=[];for(let i=0;i<80;i++){let z=-70+i*1.75;let x=14+Math.sin(z*.065)*9+Math.sin(z*.15)*2.2;pts.push(new THREE.Vector3(x,terrainHeight(x,z)+.3,z));}
+ const curve=new THREE.CatmullRomCurve3(pts),geo=new THREE.BufferGeometry().setFromPoints(curve.getPoints(220));
+ waterMat=new THREE.MeshStandardMaterial({color:0x476c62,roughness:.28,metalness:.12,transparent:true,opacity:.88});
+ const line=mesh(new THREE.TubeGeometry(curve,220,3.2,8,false),waterMat,0,0,0);line.name='water';
+ // stream banks, stones and reeds
+ for(let i=0;i<100;i++){let z=-68+Math.random()*135,x=14+Math.sin(z*.065)*9+Math.sin(z*.15)*2.2+(Math.random()-.5)*9;if(Math.random()<.55)createRock(x,z,.4+Math.random()*.9);else createTree(x+(Math.random()-.5)*10,z,.55+Math.random()*.8,1);}
+ water=line;
+}
+function createPlayer(){
+ player=new THREE.Group();scene.add(player);
+ const skin=material('#c99670'),shirt=material('#405b71'),pants=material('#303943'),shoes=material('#202522');
+ const body=mesh(new THREE.CapsuleGeometry(.48,.9,4,8),shirt,0,1.6,0,player);body.castShadow=true;player.body=body;
+ const head=mesh(new THREE.SphereGeometry(.34,12,10),skin,0,2.45,0,player);head.castShadow=true;
+ const hair=mesh(new THREE.SphereGeometry(.35,10,8),material('#342a24'),0,2.66,-.04,player);hair.scale.set(1,.65,1);player.hair=hair;
+ player.legs=[];for(let i=0;i<2;i++){let leg=mesh(new THREE.CapsuleGeometry(.16,.55,3,6),pants,(i?-.22:.22),.62,0,player);leg.castShadow=true;player.legs.push(leg);}
+ player.arms=[];for(let i=0;i<2;i++){let arm=mesh(new THREE.CapsuleGeometry(.12,.5,3,6),skin,(i?-.55:.55),1.65,0,player);arm.castShadow=true;player.arms.push(arm);}
+ player.position.set(-5,terrainHeight(-5,8),8);player.rotation.y=Math.PI;
+}
+function createItem(x,z,type){
+ const g=new THREE.Group();g.position.set(x,terrainHeight(x,z)+.25,z);scene.add(g);
+ const colors={bottle:'#75a9b7',can:'#b7a06e',paper:'#ded6c4',bag:'#9b8582',plastic:'#d8c9b0'};
+ const m=material(colors[type]||'#b7a06e',.7);
+ let obj;if(type==='bottle'){obj=mesh(new THREE.CylinderGeometry(.14,.2,.65,8),m,0,.34,0,g);mesh(new THREE.CylinderGeometry(.07,.07,.12,8),m,0,.72,0,g);}
+ else if(type==='can')obj=mesh(new THREE.CylinderGeometry(.18,.18,.45,10),m,0,.23,0,g);
+ else if(type==='paper'){obj=mesh(new THREE.BoxGeometry(.42,.05,.4),m,0,.05,0,g);obj.rotation.y=.3;}
+ else if(type==='bag'){obj=mesh(new THREE.SphereGeometry(.23,8,6),m,0,.16,0,g);obj.scale.set(.9,1.3,.8);}
+ else obj=mesh(new THREE.BoxGeometry(.32,.22,.32),m,0,.12,0,g);
+ obj.castShadow=true;g.userData.type=type;g.userData.pickup=true;items.push(g);return g;
+}
+function createRestoration(){
+ restoration=new THREE.Group();restoration.position.set(18,terrainHeight(18,-5),-5);scene.add(restoration);
+ const ring=mesh(new THREE.TorusGeometry(2,.12,8,40),material('#a9df92',.35),0,.1,0,restoration);ring.rotation.x=Math.PI/2;
+ const beam=mesh(new THREE.CylinderGeometry(.1,.1,4,8),material('#c7e9ad'),0,2,0,restoration);beam.material.transparent=true;beam.material.opacity=.3;
+ const crystal=mesh(new THREE.OctahedronGeometry(.55),material('#b9e99a',.25),0,2.7,0,restoration);crystal.userData.glow=true;
+ restoration.userData.active=true;
+}
+function createWorld(){
+ scene=new THREE.Scene();scene.background=new THREE.Color('#aabbb9');scene.fog=new THREE.FogExp2('#b8c7c0',.008);
+ camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,240);
+ const hemi=new THREE.HemisphereLight('#d7e7ef','#46553c',2.2);scene.add(hemi);
+ const sun=new THREE.DirectionalLight('#fff0d9',3.1);sun.position.set(-35,60,20);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-55;sun.shadow.camera.right=55;sun.shadow.camera.top=55;sun.shadow.camera.bottom=-55;sun.shadow.bias=-.0004;scene.add(sun);
+ createTerrain();
+ for(let i=0;i<190;i++){let x=(Math.random()-.5)*150,z=(Math.random()-.5)*150;if(Math.abs(x-14)<13)continue;if(Math.hypot(x+5,z-8)<6)continue;createTree(x,z,.65+Math.random()*.8,Math.floor(Math.random()*4));}
+ for(let i=0;i<45;i++){let x=(Math.random()-.5)*140,z=(Math.random()-.5)*140;if(Math.abs(x-14)<9)continue;createRock(x,z,.3+Math.random()*1.2);}
+ createStream();createPlayer();createRestoration();
+ const types=['bottle','can','paper','bag','plastic'];for(let i=0;i<5;i++){let z=-25+i*12,x=14+Math.sin(z*.065)*9+Math.sin(z*.15)*2.2+(i%2?4:-4);createItem(x,z,types[i]);}
+}
+function init(){
+ renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;root.appendChild(renderer.domElement);
+ clock=new THREE.Clock();createWorld();resize();animate();loading.textContent='Entorno listo · Usa WASD y E para interactuar.';
+}
+function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);}
+function movePlayer(dt){
+ let f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0),side=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0);if(!f&&!side)return;
+ const dir=new THREE.Vector3(side,0,f).normalize().applyAxisAngle(new THREE.Vector3(0,1,0),camYaw);
+ const speed=keys.shift?7.2:4.4;player.position.x+=dir.x*speed*dt;player.position.z+=dir.z*speed*dt;
+ player.position.x=clamp(player.position.x,-82,82);player.position.z=clamp(player.position.z,-82,82);player.position.y=terrainHeight(player.position.x,player.position.z);
+ player.rotation.y=Math.atan2(dir.x,dir.z);player.userData.walk=clock.elapsedTime*9;
+ player.legs.forEach((leg,i)=>leg.rotation.x=Math.sin(player.userData.walk+i*Math.PI)*.65);player.arms.forEach((arm,i)=>arm.rotation.x=Math.sin(player.userData.walk+i*Math.PI)*.45);
+}
+function cameraUpdate(dt){const target=new THREE.Vector3(player.position.x,player.position.y+1.5,player.position.z);const distance=8;const offset=new THREE.Vector3(Math.sin(camYaw)*Math.cos(camPitch)*distance,3.4+camPitch*5,Math.cos(camYaw)*Math.cos(camPitch)*distance);camera.position.lerp(target.clone().add(offset),1-Math.pow(.001,dt));camera.lookAt(target);}
+function interact(){
+ let nearest=null,d=3.3;for(const item of items){if(!item.visible)continue;let dist=player.position.distanceTo(item.position);if(dist<d){d=dist;nearest=item;}}
+ if(nearest){nearest.visible=false;collected++;document.getElementById('count').textContent=collected+' / 5';document.querySelector('#progress i').style.width=(collected/5*100)+'%';showToast('Residuo recogido · '+collected+'/5');if(collected===5)showToast('¡Bien! Ahora activa el punto de restauración junto al arroyo.');return;}
+ if(player.position.distanceTo(restoration.position)<4.2){if(collected<5){showToast('Primero recoge los 5 residuos del arroyo.');return;}if(!streamClean){streamClean=true;water.material.color.set('#5c9a9c');water.material.opacity=.95;document.getElementById('state').textContent='RECUPERADO';restoration.userData.active=false;restoration.children[0].material.color.set('#d6f6c5');showToast('¡Arroyo restaurado! La zona comienza a recuperarse.');document.querySelector('#mission h2').textContent='¡Misión completada!';document.querySelector('#mission p').textContent='Has retirado los residuos y activado la restauración. Explora el valle libremente.';}else showToast('El arroyo ya está restaurado. Explora el valle.');return;}
+ showToast('Acércate a un residuo o al punto brillante para interactuar.');
+}
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);if(controls){movePlayer(dt);cameraUpdate(dt);}if(restoration&&restoration.userData.active){restoration.children[1].rotation.y+=dt*.7;restoration.children[2].rotation.y-=dt*.9;restoration.children[2].position.y=2.7+Math.sin(clock.elapsedTime*2)*.25;}renderer.render(scene,camera);}
+document.getElementById('play').addEventListener('click',()=>{controls=true;start.style.display='none';showToast('Explora el valle. Los objetos brillan suavemente al acercarte.');});
+document.getElementById('quality').addEventListener('change',e=>{quality=e.target.value;renderer.setPixelRatio(Math.min(devicePixelRatio,quality==='high'?1.75:quality==='medium'?1.25:1));renderer.shadowMap.enabled=quality!=='low';sunShadow(quality);});
+function sunShadow(q){if(scene)scene.traverse(o=>{if(o.isDirectionalLight)o.castShadow=q!=='low';});}
+document.addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key==='e'||e.key==='E')interact();if(e.key==='Shift')keys.shift=true;});
+document.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;if(e.key==='Shift')keys.shift=false;});
+renderer?.domElement.addEventListener('click',()=>{if(controls&&innerWidth>700)renderer.domElement.requestPointerLock?.();});
+document.addEventListener('mousemove',e=>{if(document.pointerLockElement===renderer?.domElement){camYaw-=e.movementX*.0022;camPitch=clamp(camPitch-e.movementY*.0015,-.12,.7);}});
+document.addEventListener('pointerlockchange',()=>locked=document.pointerLockElement===renderer?.domElement);
+document.querySelectorAll('[data-key]').forEach(btn=>{const k=btn.dataset.key;btn.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true;});['pointerup','pointerleave','pointercancel'].forEach(ev=>btn.addEventListener(ev,()=>keys[k]=false));});
+document.getElementById('act').addEventListener('pointerdown',e=>{e.preventDefault();interact();});
+window.addEventListener('resize',resize);
+try{init();}catch(err){loading.textContent='No se pudo iniciar el 3D. Prueba otro navegador o activa la aceleración gráfica.';console.error(err);}
+</script>
+</body>
+</html>
