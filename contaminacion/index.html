@@ -553,14 +553,9 @@ section.sheet{padding:0}
 
 
 
-/* Optimización de renderizado: aísla las escenas complejas sin quitar efectos. */
-.story-scene,.wall-board-frame,.quiz-board,.game-feature,.chart,.comments-form{contain:layout paint;}
-
-/* Renderizado diferido y aislamiento sin desactivar las animaciones. */
-@supports (content-visibility:auto){
-  section:not(.sheet){content-visibility:auto;contain-intrinsic-size:auto 850px}
-}
-.story-scene,.wall-board-frame,.quiz-board,.game-feature,.chart,.comments-form{contain:layout style;}
+/* Aislamiento seguro: no aplicar content-visibility ni paint containment a zonas interactivas. */
+.story-scene,.wall-board-frame,.quiz-board,.chart,.comments-form{contain:layout style;}
+#eco-games,#open-world-launch,#contamination-wall{content-visibility:visible;contain:none;}
 
 body.overlay-open .bg,body.overlay-open .big3r,body.overlay-open .sky,body.overlay-open .pl,body.overlay-open .sm,body.overlay-open .bd{animation-play-state:paused!important}
 </style>
