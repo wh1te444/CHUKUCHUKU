@@ -6,7 +6,7 @@
 <title>NO SEAS ESPECTADOR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Rubik+Dirt&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Rubik+Dirt&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Rubik+Dirt&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{--bg:#0a100b;--card:#121c13;--bd:#2a3e2d;--ink:#e8efe4;--mut:#a5b5a2;--g1:#8fd16f;--g2:#4f9a4a;--br:#b87c4b;--sand:#e0bf82;
 --fh:"Big Shoulders Display",Impact,"Arial Narrow",sans-serif;--fb:Newsreader,Georgia,serif;--fm:Newsreader,Georgia,serif;--fx:"Rubik Dirt",Impact,sans-serif;
@@ -155,9 +155,9 @@ section.sheet{padding:0}
 .play::before{content:"";border-left:22px solid #fff;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:6px}
 .vid:hover .play{transform:scale(1.2) rotate(-6deg);background:#c0392b}
 .eq{position:absolute;right:14px;bottom:24px;display:flex;gap:3px;align-items:flex-end;height:30px}
-.eq i{width:5px;background:#fff;opacity:.85;animation:eq 1s ease-in-out infinite}
+.eq i{width:5px;height:100%;transform:scaleY(.2);transform-origin:center bottom;background:#fff;opacity:.85;animation:eq 1s ease-in-out infinite;will-change:transform}
 .eq i:nth-child(2){animation-delay:-.3s}.eq i:nth-child(3){animation-delay:-.6s}.eq i:nth-child(4){animation-delay:-.15s}
-@keyframes eq{0%,100%{height:20%}50%{height:100%}}
+@keyframes eq{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
 .vid .t{padding:1.1rem 1.3rem 1.4rem}.vid h3{font-size:1.5rem}.vid p{font-size:1rem;color:var(--mut);margin:0}
 /* compromiso */
 .pledge{display:grid;gap:.7rem;margin-top:1.5rem;max-width:640px}
@@ -170,8 +170,8 @@ section.sheet{padding:0}
 .pledge span{background:linear-gradient(rgba(143,209,111,.55),rgba(143,209,111,.55)) 0 85%/0% 45% no-repeat;transition:background-size .6s}
 .pledge label:has(input:checked) span{background-size:100% 45%}
 .meter{height:18px;background:#17241a;border-radius:4px 10px 4px 10px;overflow:hidden;margin-top:1.6rem;max-width:640px}
-.meter i{display:block;height:100%;width:0;background:repeating-linear-gradient(-45deg,var(--g2) 0 10px,var(--g1) 10px 20px);background-size:28px 100%;animation:barber2 1s linear infinite;transition:width .7s}
-@keyframes barber2{to{background-position:28px 0}}
+.meter i{position:relative;display:block;height:100%;width:100%;overflow:hidden;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,var(--g2),var(--g1));transition:transform .7s;will-change:transform}
+.meter i:after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.13) 0 10px,transparent 10px 20px);animation:barberMove 1s linear infinite;will-change:transform}
 #msg{font:400 1.5rem var(--fm);margin-top:.7rem;color:var(--g1)}
 .conf{position:fixed;top:-30px;width:14px;height:20px;border-radius:0 100% 0 100%;z-index:180;pointer-events:none;animation:leaf 3.2s ease-in forwards}
 @keyframes leaf{to{transform:translate(var(--dx),112vh) rotate(540deg)}}
@@ -255,8 +255,8 @@ section.sheet{padding:0}
 .ilb{font:400 1.3rem var(--fm)}
 .ipct b{font:900 2.4rem/1 var(--fh);letter-spacing:.04em;color:#fff;text-shadow:0 0 14px rgba(255,255,255,.7)}
 .itrack{height:10px;background:rgba(0,0,0,.35);border-radius:6px;overflow:hidden}
-.itrack i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,#c9f28f,#f4f8ee);box-shadow:0 0 14px #c9f28f;animation:bar 1.8s cubic-bezier(.45,0,.2,1) forwards}
-@keyframes bar{to{width:100%}}
+.itrack i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left center;border-radius:6px;background:linear-gradient(90deg,#c9f28f,#f4f8ee);box-shadow:0 0 14px #c9f28f;animation:barScale 1.8s cubic-bezier(.45,0,.2,1) forwards;will-change:transform}
+@keyframes barScale{to{transform:scaleX(1)}}
 /* ===== INICIO ===== */
 .hero{position:fixed;inset:0;display:flex;flex-direction:column;padding-top:calc(60px + env(safe-area-inset-top,0px));overflow:hidden;background:#07110a}
 .bg{position:absolute;inset:-5%;filter:blur(5px);pointer-events:none}
@@ -560,8 +560,10 @@ section.sheet{padding:0}
   section:not(.sheet){content-visibility:auto;contain-intrinsic-size:auto 850px}
 }
 .story-scene,.wall-board-frame,.quiz-board,.game-feature,.chart,.comments-form{contain:layout style;}
+
+body.overlay-open .bg,body.overlay-open .big3r,body.overlay-open .sky,body.overlay-open .pl,body.overlay-open .sm,body.overlay-open .bd{animation-play-state:paused!important}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 <body>
 <div id="intro" aria-hidden="true"><div class="iz">
@@ -872,6 +874,7 @@ section.sheet{padding:0}
  <p class="quiz-board-status" id="quiz-board-status" role="status"></p>
 </div>
 </div></section>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
 var $=function(s,c){return(c||document).querySelector(s)};
@@ -879,7 +882,7 @@ var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelect
 var T0=performance.now();
 /* ---------- carga: porcentaje sincronizado con la barra ---------- */
 var intro=$('#intro'),fb=$('.itrack i'),trk=$('.itrack'),pct=$('#pct');
-(function tick(){var w=fb.getBoundingClientRect().width/Math.max(trk.getBoundingClientRect().width,1);pct.textContent=Math.min(100,Math.round(w*100))+'%';if(performance.now()-T0<1900)requestAnimationFrame(tick)})();
+(function tick(){var p=Math.min(1,(performance.now()-T0)/1800);pct.textContent=Math.round(p*100)+'%';if(p<1)requestAnimationFrame(tick)})();
 setTimeout(function(){intro.classList.add('dead')},1400);
 
 /* ---------- utilidades ---------- */
@@ -1018,10 +1021,10 @@ var capt=$('#capt');
 function caption(i){var S=SECS[i];capt.textContent=S.title;capt.style.animation='none';void capt.offsetWidth;capt.style.animation=''}
 var cc=Carousel($('#cc'),SECS.map(function(s){return{img:s.art,title:s.name}}),function(i){openWheel(i)},caption);
 setTimeout(cc.start,2200);
-function openWheel(si){curSec=si;var S=SECS[si];wk.textContent=S.kick;wart.style.backgroundImage='url("'+S.art+'")';W.set(S.items,0);wheelEl.classList.add('open');wheelEl.setAttribute('aria-hidden','false');cc.pause()}
-function closeWheel(){closeSheet();wheelEl.classList.remove('open');wheelEl.setAttribute('aria-hidden','true');cc.resume()}
-function openSheet(si,item){var S=SECS[si],sh=$('#v-'+S.id);closeSheet();reset(sh);sh.scrollTop=0;sh.classList.add('open');sh.setAttribute('aria-hidden','false');openSh=si;setTimeout(function(){S.go(sh,item)},800)}
-function closeSheet(){if(openSh<0)return;var sh=$('#v-'+SECS[openSh].id);sh.classList.remove('open');sh.setAttribute('aria-hidden','true');openSh=-1}
+function openWheel(si){document.body.classList.add('overlay-open');curSec=si;var S=SECS[si];wk.textContent=S.kick;wart.style.backgroundImage='url("'+S.art+'")';W.set(S.items,0);wheelEl.classList.add('open');wheelEl.setAttribute('aria-hidden','false');cc.pause()}
+function closeWheel(){closeSheet();wheelEl.classList.remove('open');document.body.classList.remove('overlay-open');wheelEl.setAttribute('aria-hidden','true');cc.resume()}
+function openSheet(si,item){document.body.classList.add('overlay-open');var S=SECS[si],sh=$('#v-'+S.id);closeSheet();reset(sh);sh.scrollTop=0;sh.classList.add('open');sh.setAttribute('aria-hidden','false');openSh=si;setTimeout(function(){S.go(sh,item)},800)}
+function closeSheet(){if(openSh<0)return;var sh=$('#v-'+SECS[openSh].id);sh.classList.remove('open');sh.setAttribute('aria-hidden','true');openSh=-1;if(!wheelEl.classList.contains('open'))document.body.classList.remove('overlay-open')}
 $('#wx').onclick=closeWheel;
 $$('[data-back]').forEach(function(b){b.onclick=closeSheet});
 $$('[data-open]').forEach(function(a){a.onclick=function(e){e.preventDefault();closeSheet();openWheel(+a.dataset.open)}});
@@ -1031,7 +1034,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(openSh>=
 /* ---------- compromiso ---------- */
 var cb=$$('#v-compromiso .pledge input'),mb=$('#mbar'),mg=$('#msg');
 function leaves(){for(var i=0;i<36;i++){var c=document.createElement('i');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=cl[i%4];c.style.setProperty('--dx',(Math.random()*160-80)+'px');c.style.animationDelay=(Math.random()*.8)+'s';document.body.appendChild(c);setTimeout(function(x){x.remove()},4200,c)}}
-function upd(){var n=0;cb.forEach(function(c){if(c.checked)n++});mb.style.width=(n/cb.length*100)+'%';if(n===cb.length){mg.textContent='¡Gracias! Tu compromiso hace la diferencia';leaves()}else mg.textContent=n+' de '+cb.length+' acciones'}
+function upd(){var n=0;cb.forEach(function(c){if(c.checked)n++});mb.style.transform='scaleX('+(n/cb.length)+')';if(n===cb.length){mg.textContent='¡Gracias! Tu compromiso hace la diferencia';leaves()}else mg.textContent=n+' de '+cb.length+' acciones'}
 cb.forEach(function(c){c.onchange=upd});
 
 /* ---------- MINIJUEGO QUIZ POR NIVELES ---------- */
@@ -1260,6 +1263,7 @@ function stopCommentsPolling(){
  if(commentsPolling){window.clearInterval(commentsPolling);commentsPolling=null;}
 }
 function openComments(){
+ document.body.classList.add('overlay-open');
  commentsSheet.classList.add('open');
  commentsSheet.setAttribute('aria-hidden','false');
  document.body.style.overflow='hidden';
@@ -1271,6 +1275,7 @@ function openComments(){
 }
 function closeComments(){
  commentsSheet.classList.remove('open');
+ if(!wheelEl.classList.contains('open')&&openSh<0)document.body.classList.remove('overlay-open');
  commentsSheet.setAttribute('aria-hidden','true');
  document.body.style.overflow='';
  stopCommentsPolling();
