@@ -397,7 +397,7 @@ section.sheet{padding:0}
 .story-start:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .story-hint{margin:0;color:var(--mut);font-size:.9rem}
 .story-topline{display:flex;justify-content:space-between;gap:.8rem;align-items:center;margin-bottom:.75rem;color:var(--sand);font:900 1rem var(--fh);letter-spacing:.06em;text-transform:uppercase}
-.story-scene{position:relative;isolation:isolate;overflow:hidden;min-height:300px;aspect-ratio:16/8;max-height:430px;border:2px solid rgba(143,209,111,.42);border-radius:12px 28px 12px 28px;background:#b9d6d2;box-shadow:inset 0 -18px 35px rgba(30,65,29,.16)}
+.story-scene{container-type:inline-size;position:relative;isolation:isolate;overflow:hidden;min-height:300px;aspect-ratio:16/8;max-height:430px;border:2px solid rgba(143,209,111,.42);border-radius:12px 28px 12px 28px;background:#b9d6d2;box-shadow:inset 0 -18px 35px rgba(30,65,29,.16)}
 .story-pov-world{position:absolute;inset:0;overflow:hidden;transform-origin:50% 75%;animation:storyPOVIdle 7s ease-in-out infinite alternate}
 .story-pov-backdrop{position:absolute;inset:0 0 30%;background:linear-gradient(180deg,#c6dfdc 0%,#e5e4cb 100%)}
 .story-pov-backdrop:before{content:"";position:absolute;top:17%;left:36%;width:28%;height:48%;border:8px solid #80674c;border-bottom:0;border-radius:5px 5px 0 0;background:linear-gradient(90deg,#9bc9d0 0 48%,#e6e1c7 48% 52%,#9bc9d0 52%);box-shadow:0 0 0 5px rgba(255,255,255,.16)}
@@ -488,6 +488,7 @@ section.sheet{padding:0}
 @keyframes storyHandSupport{0%,100%{transform:rotate(31deg)}42%{transform:rotate(13deg) translate(7%,-17%)}}
 @keyframes storyItemPickup{0%{transform:translateX(-50%) scale(1)}35%{transform:translateX(-50%) translateY(-24px) scale(1.12)}68%{transform:translateX(8px) translateY(42px) scale(1.65)}100%{transform:translateX(28px) translateY(92px) scale(.35);opacity:0}}
 @keyframes storyItemToBin{0%{left:52%;transform:translateX(-50%) scale(1)}28%{left:45%;transform:translateX(-50%) translateY(-20px) scale(1.15)}72%{left:18%;transform:translateX(-50%) translateY(18px) scale(.78) rotate(-20deg)}100%{left:15%;transform:translateX(-50%) translateY(25px) scale(.25) rotate(-45deg);opacity:.12}}
+@supports (width:1cqw){@keyframes storyItemToBin{0%{transform:translateX(-50%) scale(1)}28%{transform:translateX(calc(-50% - 7cqw)) translateY(-20px) scale(1.15)}72%{transform:translateX(calc(-50% - 34cqw)) translateY(18px) scale(.78) rotate(-20deg)}100%{transform:translateX(calc(-50% - 37cqw)) translateY(25px) scale(.25) rotate(-45deg);opacity:.12}}}
 @keyframes storyItemKeep{0%{transform:translateX(-50%) scale(1)}42%{transform:translateX(-50%) translateY(-32px) scale(1.25)}100%{transform:translateX(70px) translateY(80px) scale(.4);opacity:0}}
 @keyframes storyItemPlace{0%,100%{transform:translateX(-50%) scale(1)}45%{transform:translateX(-50%) translateY(20px) scale(.95)}75%{transform:translateX(-50%) translateY(28px) scale(.85)}}
 @keyframes storyItemPush{0%{transform:translateX(-50%) scale(1)}45%{transform:translateX(-50%) translateY(-15px) scale(.95)}100%{transform:translateX(80px) translateY(-10px) scale(.7);opacity:.8}}
