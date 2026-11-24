@@ -997,7 +997,7 @@ function go(){if(raf!=null)cancelAnimationFrame(raf);last=performance.now();raf=
 function apply(v,snap){var n=rows.length;v=Math.min(Math.max(v,0),n-1);if(snap)v=Math.round(v);tg=v;var ix=Math.round(v);if(ix!==sel){sel=ix;rows.forEach(function(r,i){r.setAttribute('aria-selected',i===sel?'true':'false')})}go()}
 function item(i){if(moved)return;var cur=Math.round(tg);apply(i,true);clearTimeout(pt);pt=setTimeout(function(){onPick(i)},i===cur?120:380)}
 root.addEventListener('pointerdown',function(e){drag={y:e.clientY,s:tg,id:e.pointerId};moved=false});
-root.addEventListener('pointermove',function(e){if(!drag)return;var dy=e.clientY-drag.y;if(!moved&&Math.abs(dy)>4){moved=true;try{root.setPointerCapture(drag.id)}catch(_){}}if(moved)apply(drag.s-dy/cfg.rowH,false)});
+root.addEventListener('pointermove',function(e){if(!drag)return;var dy=e.clientY-drag.y;if(!moved&&Math.abs(dy)>4){moved=true;try{root.setPointerCapture(drag.id)}catch(_){}}if(moved)apply(drag.s-dy/cfg.rowH,false)},{passive:true});
 function end(){if(!drag)return;drag=null;if(moved){apply(tg,true);setTimeout(function(){moved=false},0)}}
 root.addEventListener('pointerup',end);root.addEventListener('pointercancel',end);
 root.addEventListener('wheel',function(e){e.preventDefault();var dl=e.deltaMode===1?e.deltaY*24:e.deltaY;apply(tg+Math.max(-1,Math.min(1,dl/cfg.rowH)),false);clearTimeout(wt);wt=setTimeout(function(){apply(tg,true)},140)},{passive:false});
@@ -1023,7 +1023,7 @@ var cc=Carousel($('#cc'),SECS.map(function(s){return{img:s.art,title:s.name}}),f
 setTimeout(cc.start,2200);
 function openWheel(si){document.body.classList.add('overlay-open');curSec=si;var S=SECS[si];wk.textContent=S.kick;wart.style.backgroundImage='url("'+S.art+'")';W.set(S.items,0);wheelEl.classList.add('open');wheelEl.setAttribute('aria-hidden','false');cc.pause()}
 function closeWheel(){closeSheet();wheelEl.classList.remove('open');document.body.classList.remove('overlay-open');wheelEl.setAttribute('aria-hidden','true');cc.resume()}
-function openSheet(si,item){document.body.classList.add('overlay-open');var S=SECS[si],sh=$('#v-'+S.id);closeSheet();reset(sh);sh.scrollTop=0;sh.classList.add('open');sh.setAttribute('aria-hidden','false');openSh=si;setTimeout(function(){S.go(sh,item)},800)}
+function openSheet(si,item){var S=SECS[si],sh=$('#v-'+S.id);closeSheet();document.body.classList.add('overlay-open');reset(sh);sh.scrollTop=0;sh.classList.add('open');sh.setAttribute('aria-hidden','false');openSh=si;setTimeout(function(){S.go(sh,item)},800)}
 function closeSheet(){if(openSh<0)return;var sh=$('#v-'+SECS[openSh].id);sh.classList.remove('open');sh.setAttribute('aria-hidden','true');openSh=-1;if(!wheelEl.classList.contains('open'))document.body.classList.remove('overlay-open')}
 $('#wx').onclick=closeWheel;
 $$('[data-back]').forEach(function(b){b.onclick=closeSheet});
@@ -1033,7 +1033,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(openSh>=
 
 /* ---------- compromiso ---------- */
 var cb=$$('#v-compromiso .pledge input'),mb=$('#mbar'),mg=$('#msg');
-function leaves(){for(var i=0;i<36;i++){var c=document.createElement('i');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=cl[i%4];c.style.setProperty('--dx',(Math.random()*160-80)+'px');c.style.animationDelay=(Math.random()*.8)+'s';document.body.appendChild(c);setTimeout(function(x){x.remove()},4200,c)}}
+function leaves(){var total=window.matchMedia&&window.matchMedia('(max-width:640px)').matches?24:36;for(var i=0;i<total;i++){var c=document.createElement('i');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=cl[i%4];c.style.setProperty('--dx',(Math.random()*160-80)+'px');c.style.animationDelay=(Math.random()*.8)+'s';document.body.appendChild(c);setTimeout(function(x){x.remove()},4200,c)}}
 function upd(){var n=0;cb.forEach(function(c){if(c.checked)n++});mb.style.transform='scaleX('+(n/cb.length)+')';if(n===cb.length){mg.textContent='¡Gracias! Tu compromiso hace la diferencia';leaves()}else mg.textContent=n+' de '+cb.length+' acciones'}
 cb.forEach(function(c){c.onchange=upd});
 
