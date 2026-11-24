@@ -576,6 +576,25 @@ section.sheet{padding:0}
   .sj,.i3,.ib{animation:none!important;opacity:1!important;transform:none!important}
 }
 
+/* Modo rendimiento alto en móviles: prioriza fluidez sobre adornos animados. */
+@media(max-width:640px){
+  #intro{display:none!important}
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .rv{opacity:1!important;clip-path:none!important}
+  .rv:not(.in){opacity:1!important}
+  .items span{opacity:1!important}
+  .fill,.meter i{background-position:0 0!important}
+  .card::before,.card::after,.wm,.bdg::before,.pbig::after,.eq,.conf{animation:none!important}
+  .bg,.bar,#wheel,.sheet,.comments-sheet{filter:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .bsvg{filter:none!important}
+  .story-scene,.game-feature,.quiz-box,.quiz-board,.wall-board-frame{box-shadow:none!important;filter:none!important}
+  .story-pov-world,.story-scene *{animation:none!important;transition:none!important}
+  section:not(.sheet),.quiz-board{content-visibility:auto;contain-intrinsic-size:auto 850px}
+}
+@media(min-width:641px){
+  section:not(.sheet),.quiz-board{content-visibility:visible}
+}
+
 /* Optimización de renderizado: aísla las escenas complejas sin quitar efectos. */
 .story-scene,.wall-board-frame,.quiz-board,.game-feature,.chart,.comments-form{contain:layout paint;}
 </style>
@@ -897,8 +916,10 @@ var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelect
 var T0=performance.now();
 /* ---------- carga: porcentaje sincronizado con la barra ---------- */
 var intro=$('#intro'),fb=$('.itrack i'),trk=$('.itrack'),pct=$('#pct');
-(function tick(){var w=fb.getBoundingClientRect().width/Math.max(trk.getBoundingClientRect().width,1);pct.textContent=Math.min(100,Math.round(w*100))+'%';if(performance.now()-T0<1900)requestAnimationFrame(tick)})();
-setTimeout(function(){intro.classList.add('dead')},1400);
+var lowPowerPhone=window.matchMedia&&window.matchMedia('(max-width:640px)').matches;
+if(!lowPowerPhone){(function tick(){var w=fb.getBoundingClientRect().width/Math.max(trk.getBoundingClientRect().width,1);pct.textContent=Math.min(100,Math.round(w*100))+'%';if(performance.now()-T0<1900)requestAnimationFrame(tick)})();}
+else{pct.textContent='100%';intro.classList.add('dead');}
+setTimeout(function(){intro.classList.add('dead')},lowPowerPhone?0:1400);
 
 /* ---------- utilidades ---------- */
 var TO=Math.PI/180;
@@ -1033,7 +1054,7 @@ var W=Wheel(owEl,function(i){openSheet(curSec,i)});
 var capt=$('#capt');
 function caption(i){var S=SECS[i];capt.textContent=S.title;capt.style.animation='none';void capt.offsetWidth;capt.style.animation=''}
 var cc=Carousel($('#cc'),SECS.map(function(s){return{img:s.art,title:s.name}}),function(i){openWheel(i)},caption);
-setTimeout(cc.start,2200);
+setTimeout(function(){if(!(window.matchMedia&&window.matchMedia('(max-width:640px)').matches))cc.start()},2200);
 function openWheel(si){curSec=si;var S=SECS[si];wk.textContent=S.kick;wart.style.backgroundImage='url("'+S.art+'")';W.set(S.items,0);wheelEl.classList.add('open');wheelEl.setAttribute('aria-hidden','false');cc.pause()}
 function closeWheel(){closeSheet();wheelEl.classList.remove('open');wheelEl.setAttribute('aria-hidden','true');cc.resume()}
 function openSheet(si,item){var S=SECS[si],sh=$('#v-'+S.id);closeSheet();reset(sh);sh.scrollTop=0;sh.classList.add('open');sh.setAttribute('aria-hidden','false');openSh=si;setTimeout(function(){S.go(sh,item)},800)}
