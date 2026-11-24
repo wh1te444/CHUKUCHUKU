@@ -549,6 +549,9 @@ section.sheet{padding:0}
 @media(max-width:640px){.restore-scene{height:195px}.restore-tasks{grid-template-columns:1fr}.restore-footer,.maze-footer{flex-direction:column;align-items:stretch}.maze-grid{width:min(100%,390px);gap:1px;padding:4px}.maze-controls{grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,44px)}}
 @media(prefers-reduced-motion:reduce){.restore-progress i,.restore-litter{transition:none!important}}
 
+
+/* Optimización de renderizado: aísla las escenas complejas sin quitar efectos. */
+.story-scene,.wall-board-frame,.quiz-board,.game-feature,.chart,.comments-form{contain:layout paint;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -931,7 +934,7 @@ var ph=mk('ccp');ph.style.cssText='left:'+(-t.st)+'px;width:'+cw+'px;height:'+ch
 fr.appendChild(ph);fr.appendChild(mk('ccsh'));el.appendChild(fr);return el}
 items.forEach(function(it,idx){var c=mk('ccc');c.dataset.i=idx;c.setAttribute('role','group');c.setAttribute('aria-label',it.title);tiles.forEach(function(t){c.appendChild(tile(it,t))});ring.appendChild(c);cards.push(c)});
 var S={angle:0,vel:0,target:null,dir:-1,press:null,drag:false,hover:false,px:0,py:0,pin:false,yaw:0,pitch:0,hold:0,sup:false,last:0,fit:1,drop:300,intro:null,active:-1,paused:false},raf=0;
-var minFrameGap=window.matchMedia&&window.matchMedia('(max-width:640px)').matches?1000/30:0,lastPaint=0;
+var minFrameGap=0,lastPaint=0;
 function nearest(a){return Math.round(a/step)*step}
 function measure(){var rc=root.getBoundingClientRect();if(!rc.width||!rc.height)return;var w=rc.width*1.3,h=rc.height*.92,x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;var cs=[[-cw/2,-ch/2],[cw/2,-ch/2],[-cw/2,ch/2],[cw/2,ch/2]];
 for(var a=-180;a<=180;a+=15){cs.forEach(function(c){var p=rotX(rotY([c[0],c[1],radius],a),TILT);p=[p[0],p[1],p[2]-radius];if(p[2]>=P*.95)return;var k=P/(P-p[2]);x0=Math.min(x0,p[0]*k);x1=Math.max(x1,p[0]*k);y0=Math.min(y0,p[1]*k);y1=Math.max(y1,p[1]*k)})}
